@@ -9,7 +9,8 @@ from PlannerApp.models import Project
 
 @admin.register(Sprint)
 class SprintAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('start_date', 'end_date', )
+    list_filter = ()
 
 
 class CustomMPTTModelAdmin(DraggableMPTTAdmin):

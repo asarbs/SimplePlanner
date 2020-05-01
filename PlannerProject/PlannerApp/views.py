@@ -11,8 +11,12 @@ logger = logging.getLogger(__name__)
 
 from PlannerApp.models import Project
 from PlannerApp.models import Item
+from PlannerApp.models import Team
+from PlannerApp.models import Sprint
+
 from PlannerApp.forms import NewProjectForm
 from PlannerApp.forms import NewItemForm
+from PlannerApp.forms import NewTeamForm
 
 # Create your views here.
 
@@ -97,4 +101,44 @@ class MyTasksList(ListView):
         queryset = super(MyTasksList, self).get_queryset()
         queryset = queryset.filter(assignment=self.request.user)
         logger.debug(queryset)
+        return queryset
+
+class TeamAdd(CreateView):
+    model = Team
+    form_class = NewTeamForm
+
+    def form_valid(self, form):
+        team = form.save()
+        team.save()
+        self.id = team.id
+        team.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse("team-details", args=(self.id,))
+
+class TeamDetails(DetailView):
+    model = Team
+
+    def get_object(self, queryset=None):
+        team = super(TeamDetails, self).get_object(queryset)
+        return team
+
+class TeamList(ListView):
+    model = Team
+    template_name = "PlannerApp/team_list.html"
+    context_object_name = 'teams'
+
+    def get_queryset(self):
+        queryset = super(TeamList, self).get_queryset()
+        return queryset
+
+
+class SprintDetails(DetailView):
+    model = Sprint
+    template_name = "PlannerApp/sprint_details.html"
+    context_object_name = 'sprint'
+
+    def get_queryset(self):
+        queryset = super(DetailView, self).get_queryset()
         return queryset

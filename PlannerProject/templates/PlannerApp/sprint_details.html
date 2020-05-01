@@ -1,0 +1,11 @@
+{% extends "main.html" %}
+{% load mptt_tags %}
+{% load PalannerProjectTags %}
+{% block main %}
+
+
+<h1>{% get_sprint_team sprint %} sprint {{ sprint }}</h1>
+
+{% get_strint_items sprint %}
+
+{% endblock %}

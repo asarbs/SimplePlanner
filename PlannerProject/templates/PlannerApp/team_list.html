@@ -1,0 +1,17 @@
+{% extends "main.html" %}
+{% block main %}
+
+<h1>Team List</h1>
+
+<ul>
+{% for team in teams %}
+    <li>
+        <a href="{% url 'team-details' team.id %}">{{ team }}</a>
+    </li>
+
+{% endfor %}
+</ul>
+
+
+
+{% endblock %}

@@ -5,6 +5,7 @@
 
 
 <h1>{{ project }}</h1>
+Project progress: {% project_progress project %}
 <div class="list_of_actions">
     <a href="{% url 'item-create' %}?pid={{ project.id }}" class="button">New Item</a>
 </div>
