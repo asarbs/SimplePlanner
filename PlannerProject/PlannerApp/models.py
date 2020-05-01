@@ -49,11 +49,12 @@ class Item(MPTTModel):
     priority = models.FloatField(max_length=25)
     sprint = models.ManyToManyField(Sprint, blank=True)
     assignment = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    planned_start_date = models.DateField(default=datetime.date.today)
-    planned_end_date = models.DateField(default=datetime.date.today)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    planned_start_date = models.DateField(default=datetime.date.today,null=True, blank=True)
+    planned_end_date = models.DateField(default=datetime.date.today,null=True, blank=True)
     status = models.IntegerField(choices=[(tag.value, tag.name) for tag in Status], default=Status.NEW ) 
+    team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.CASCADE)
 
     @property
     def length(self):

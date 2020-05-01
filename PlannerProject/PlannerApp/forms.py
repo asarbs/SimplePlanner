@@ -21,14 +21,15 @@ class NewItemForm(ModelForm):
         super(NewItemForm, self).__init__(*args, **kwargs)
         self.pid = pid
         self.fields['project_id'].initial = pid
-        #self.fields['project_id'].widget = HiddenInput()
+        self.fields['project_id'].widget = HiddenInput()
         self.iid = iid
         self.fields['item_id'].initial = iid
-        # self.fields['item_id'].widget = HiddenInput()
+        self.fields['item_id'].widget = HiddenInput()
+        self.fields['priority'].initial = 1000
 
     class Meta:
         model = Item
-        fields = ['name', 'priority', 'sprint', 'assignment', 'start_date', 'end_date', 'status', 'planned_start_date', 'planned_end_date']
+        fields = ['name', 'priority', 'sprint', 'assignment', 'start_date', 'end_date', 'status', 'planned_start_date', 'planned_end_date', 'team']
         widgets = {
             'start_date': DateInput(format=('%d.$m.%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
             'end_date': DateInput(format=('%d.$m.%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),

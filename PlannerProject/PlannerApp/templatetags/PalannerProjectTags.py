@@ -9,16 +9,20 @@ logger = logging.getLogger(__name__)
 
 register = template.Library()
 
+def build_item_line(nodeItem):
+    ss = '<a href="' + reverse('item-details', args=(nodeItem.id,) ) + '">' + str(nodeItem.name) + '</a>'
+    ss += ' Status: ' + str(Status(nodeItem.status))
+    ss += ' Planned Duration: ' + str(nodeItem.planned_start_date) + ' - ' + str(nodeItem.planned_end_date)
+    ss += ' Duration: ' + str(nodeItem.start_date) + ' - ' + str(nodeItem.end_date)
+    return ss
+
 @register.simple_tag
 def build_tree(nodeItems):
     ss = '<ul class="tree">'
     logger.debug(type(nodeItems))
     for nodeItem in nodeItems:
         ss += '<li>'
-        ss += '<a href="' + reverse('item-details', args=(nodeItem.id,) ) + '">' + str(nodeItem.name) + '</a>'
-        ss += ' Status: ' + str(Status(nodeItem.status))
-        ss += ' Planned Duration: ' + str(nodeItem.planned_start_date) + ' - ' + str(nodeItem.planned_end_date)
-        ss += ' Duration: ' + str(nodeItem.start_date) + ' - ' + str(nodeItem.end_date)
+        ss += build_item_line(nodeItem)
         ss += build_tree(Item.objects.filter(parent=nodeItem))
         ss += '</li>'
     ss += '</ul>'
@@ -43,6 +47,8 @@ def build_item_affiliation(nodeItem):
 def sprint_details(t_sprint):
     total = Item.objects.filter(sprint = t_sprint).filter(~Q(status = Status.REJECTED.value)).count()
     done = Item.objects.filter(sprint = t_sprint).filter(status = Status.DONE.value).count()
+    if total == 0:
+        return None
     pert = (done/total) * 100
     return u'{0}/{1} {2}%'.format(done,total,pert)
 
@@ -55,4 +61,10 @@ def get_sprint_team(sprint):
 def get_strint_items(sprint):
     items = Item.objects.filter(sprint=sprint)
     logger.debug(items)
-    return items
+    ss = "<ul>"
+    for item in items:
+        ss += "<li>"
+        ss += build_item_line(item)
+        ss += "</li>"
+    ss += "</ul>"
+    return mark_safe(ss)
