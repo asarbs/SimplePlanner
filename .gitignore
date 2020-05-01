@@ -1,0 +1,6 @@
+.idea
+*.pyc
+env
+db.sqlite3
+Planner.sublime-project
+Planner.sublime-workspace
