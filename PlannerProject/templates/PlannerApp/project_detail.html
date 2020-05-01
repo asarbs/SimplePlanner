@@ -1,0 +1,17 @@
+{% extends "main.html" %}
+{% load mptt_tags %}
+{% load PalannerProjectTags %}
+{% block main %}
+
+
+<h1>{{ project }}</h1>
+<div class="list_of_actions">
+    <a href="{% url 'item-create' %}?pid={{ project.id }}" class="button">New Item</a>
+</div>
+
+<br><br>
+
+
+{% build_tree project.items.all %}
+
+{% endblock %}

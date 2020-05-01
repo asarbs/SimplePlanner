@@ -1,0 +1,22 @@
+{% load static %}
+{% load planner_extras %}
+
+<html>
+{% include "head.html" %}
+<body>
+
+<div id="top">
+    <img src="{% static "/img/logo.png" %}">
+    Logged user: {% current_login user %}
+</div>
+
+<div class="row"></div>
+
+    {% include "menu.html" %}
+
+    <div id="main" class="column_right">
+        {% block main %}{% endblock %}
+    </div>
+</div>
+</body>
+</html>

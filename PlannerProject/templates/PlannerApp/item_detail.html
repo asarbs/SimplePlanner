@@ -1,0 +1,18 @@
+{% extends "main.html" %}
+{% load mptt_tags %}
+{% load PalannerProjectTags %}
+{% block main %}
+
+
+<h1>{{ item }}</h1>
+<p>{% build_item_affiliation item %}</p>
+<p>{{ item.parent }}</p>
+<p>{{ item.priority }}</p>
+<p>{{ item.sprint }}</p>
+<div class="list_of_actions">
+    <a href="{% url 'item-create' %}?iid={{ item.id }}" class="button">Split</a>
+</div>
+<br><br>
+
+
+{% endblock %}
