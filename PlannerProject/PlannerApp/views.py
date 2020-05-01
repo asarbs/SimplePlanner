@@ -5,10 +5,12 @@ from django.urls import reverse
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+import logging
+
+logger = logging.getLogger(__name__)
 
 from PlannerApp.models import Project
 from PlannerApp.models import Item
-
 from PlannerApp.forms import NewProjectForm
 from PlannerApp.forms import NewItemForm
 
@@ -94,5 +96,5 @@ class MyTasksList(ListView):
     def get_queryset(self):
         queryset = super(MyTasksList, self).get_queryset()
         queryset = queryset.filter(assignment=self.request.user)
-        print(queryset)
+        logger.debug(queryset)
         return queryset

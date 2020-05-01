@@ -28,8 +28,10 @@ class NewItemForm(ModelForm):
 
     class Meta:
         model = Item
-        fields = ['name', 'parent', 'priority', 'sprint', 'assignment', 'start_date', 'end_date', 'status', 'project_id', 'item_id']
+        fields = ['name', 'parent', 'priority', 'sprint', 'assignment', 'start_date', 'end_date', 'status', 'planned_start_date', 'planned_end_date']
         widgets = {
             'start_date': DateInput(format=('%d.$m.%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
             'end_date': DateInput(format=('%d.$m.%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
+            'planned_start_date': DateInput(format=('%d.$m.%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
+            'planned_end_date': DateInput(format=('%d.$m.%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
         }
