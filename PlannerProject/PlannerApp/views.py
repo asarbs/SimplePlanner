@@ -6,6 +6,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 import logging
+from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
@@ -13,6 +14,7 @@ from PlannerApp.models import Project
 from PlannerApp.models import Item
 from PlannerApp.models import Team
 from PlannerApp.models import Sprint
+from PlannerApp.models import Status
 
 from PlannerApp.forms import NewProjectForm
 from PlannerApp.forms import NewItemForm
@@ -85,11 +87,29 @@ class ItemAdd(CreateView):
             parent = Item.objects.get(id=form.cleaned_data['item_id'])
             item.insert_at(target=parent, position='last-child', save=True)
             item.save()
+        print(item.planned_start_date == item.planned_end_date)
+        if item.planned_start_date == item.planned_end_date:
+            item.planned_end_date += timedelta(days=1)
+            item.save()
         self.id = item.id
         return super(ItemAdd, self).form_valid(form)
 
     def get_success_url(self):
         return reverse("item-details", args=(self.id,))
+
+def startItem(request, pk=None): 
+    item = Item.objects.get(id=pk)
+    item.status = Status.IN_PROGRESS.value
+    item.start_date = datetime.now()
+    item.save()
+    return HttpResponseRedirect(reverse("item-details", args=(pk,)))
+
+def endItem(request, pk=None): 
+    item = Item.objects.get(id=pk)
+    item.status = Status.DONE.value
+    item.end_date = datetime.now()
+    item.save()
+    return HttpResponseRedirect(reverse("item-details", args=(pk,)))
 
 
 class MyTasksList(ListView):

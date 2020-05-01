@@ -19,7 +19,6 @@ def build_item_line(nodeItem):
 @register.simple_tag
 def build_tree(nodeItems):
     ss = '<ul class="tree">'
-    logger.debug(type(nodeItems))
     for nodeItem in nodeItems:
         ss += '<li>'
         ss += build_item_line(nodeItem)
@@ -60,7 +59,6 @@ def get_sprint_team(sprint):
 @register.simple_tag
 def get_strint_items(sprint):
     items = Item.objects.filter(sprint=sprint)
-    logger.debug(items)
     ss = "<ul>"
     for item in items:
         ss += "<li>"
@@ -68,3 +66,70 @@ def get_strint_items(sprint):
         ss += "</li>"
     ss += "</ul>"
     return mark_safe(ss)
+
+
+#[
+#         ['2014Spring', 'Spring 2014', 'spring', new Date(2014, 2, 22), new Date(2014, 5, 20), null, 100, null],
+#         ['2014Summer', 'Summer 2014', 'summer', new Date(2014, 5, 21), new Date(2014, 8, 20), null, 100, null],
+#         ['2014Autumn', 'Autumn 2014', 'autumn', new Date(2014, 8, 21), new Date(2014, 11, 20), null, 100, null]
+#]
+
+      # data.addColumn('string', 'Task ID');
+      # data.addColumn('string', 'Task Name');
+      # data.addColumn('string', 'Resource');
+      # data.addColumn('date', 'Start Date');
+      # data.addColumn('date', 'End Date');
+      # data.addColumn('number', 'Duration');
+      # data.addColumn('number', 'Percent Complete');
+      # data.addColumn('string', 'Dependencies');
+
+def build_data_chart_one_line(item, ansesstor="null"):
+    item_planned_start_date_year = 0
+    item_planned_start_date_month = 0
+    item_planned_start_date_day = 0
+    item_planned_end_date_year = 0
+    item_planned_end_date_month = 0
+    item_planned_end_date_day = 0
+    try:
+
+        item_planned_start_date_year = item.planned_start_date.year
+        item_planned_start_date_month = item.planned_start_date.month -1
+        item_planned_start_date_day = item.planned_start_date.day
+        item_planned_end_date_year = item.planned_end_date.year
+        item_planned_end_date_month = item.planned_end_date.month -1 
+        item_planned_end_date_day = item.planned_end_date.day
+    except AttributeError: 
+        pass
+
+    a = "null" if ansesstor == "null"  else "'" + ansesstor + "'"
+    s =  "\t['{0}', '{1}', '{2}', new Date({3}, {4}, {5}), new Date({6}, {7}, {8}), null, 100, {9}]".format(
+            item.item_id, 
+            item, 
+            item.team, 
+            item_planned_start_date_year, 
+            item_planned_start_date_month, 
+            item_planned_start_date_day,
+            item_planned_end_date_year, 
+            item_planned_end_date_month, 
+            item_planned_end_date_day,
+            str(a)
+            )
+    return s
+
+def foo(projectItems, ansesstor="null"):
+    lines = []
+    for item in projectItems:
+        s = build_data_chart_one_line(item, ansesstor)
+        lines.append(s)
+        lines.extend(foo(item.get_children(), item.item_id))
+    return lines
+
+@register.simple_tag
+def get_gnat_chart_data(projectItems):
+    lines = []
+    lines.extend(foo(projectItems))
+    ss = '[\n' + ',\n'.join(lines) + "\n]"
+    logger.debug(ss)
+    return mark_safe(ss)
+
+

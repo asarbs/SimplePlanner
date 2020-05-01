@@ -11,6 +11,8 @@
 <p>{{ item.sprint }}</p>
 <div class="list_of_actions">
     <a href="{% url 'item-create' %}?iid={{ item.id }}" class="button">Add child</a>
+    <a href="{% url 'item-start' pk=item.pk %}" class="button">Start item</a>
+    <a href="{% url 'item-end' pk=item.pk %}" class="button">Close item</a>
 </div>
 <br><br>
 

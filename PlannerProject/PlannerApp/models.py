@@ -58,7 +58,11 @@ class Item(MPTTModel):
 
     @property
     def length(self):
-        return (self.end_date - self.start_date).days
+        try:
+            return (self.end_date - self.start_date).days
+        except TypeError:
+            return "0"
+
 
     @property
     def item_id(self):
