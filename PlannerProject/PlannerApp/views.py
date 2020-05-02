@@ -101,6 +101,7 @@ def startItem(request, pk=None):
     item = Item.objects.get(id=pk)
     item.status = Status.IN_PROGRESS.value
     item.start_date = datetime.now()
+    item.assignment = request.user
     item.save()
     return HttpResponseRedirect(reverse("item-details", args=(pk,)))
 

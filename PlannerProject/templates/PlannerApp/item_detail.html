@@ -4,17 +4,107 @@
 {% block main %}
 
 
-<h1>{{ item }}</h1>
-<p>{% build_item_affiliation item %}</p>
-<p>{{ item.parent }}</p>
-<p>{{ item.priority }}</p>
-<p>{{ item.sprint }}</p>
-<div class="list_of_actions">
-    <a href="{% url 'item-create' %}?iid={{ item.id }}" class="button">Add child</a>
-    <a href="{% url 'item-start' pk=item.pk %}" class="button">Start item</a>
-    <a href="{% url 'item-end' pk=item.pk %}" class="button">Close item</a> 
+<div style="width: 100%">
+    <div class="two_column_left">
+        <h1>{{ item }}</h1>
+    </div>
+    <div class="two_column_right list_of_actions">
+        <a href="{% url 'item-create' %}?iid={{ item.id }}" class="button">Add child</a>
+        <a href="{% url 'item-start' pk=item.pk %}" class="button">Start item</a>
+        <a href="{% url 'item-end' pk=item.pk %}" class="button">Close item</a> 
+    </div>
 </div>
-<br><br>
+
+<table class="content">
+    <tr class="even">
+        <td class="left">
+            Item path:
+        </td>
+        <td class="right">
+            {% build_item_affiliation item %}
+        </td>
+    </tr>
+    <tr class="odd">
+        <td class="left">
+            Parent:
+        </td>
+        <td class="right">
+            {{ item.parent }}
+        </td>
+    </tr>
+    <tr class="even">
+        <td class="left">
+            Priority:
+        </td>
+        <td class="right">
+            {{ item.priority }}
+        </td>
+    </tr>
+    <tr class="odd">
+        <td class="left">
+            Sprint:
+        </td>
+        <td class="right">
+            {{ item.sprint }}
+        </td>
+    </tr>
+    <tr class="even">
+        <td class="left">
+            Assignment:
+        </td>
+        <td class="right">
+            {{ item.assignment }}
+        </td>
+    </tr>
+    <tr class="odd">
+        <td class="left">
+            Start date:
+        </td>
+        <td class="right">
+            {{ item.start_date }}
+        </td>
+    </tr>
+    <tr class="even">
+        <td class="left">
+            Close date:
+        </td>
+        <td class="right">
+            {{ item.end_date }}
+        </td>
+    </tr>
+    <tr class="odd">
+        <td class="left">
+            Planned start date:
+        </td>
+        <td class="right">
+            {{ item.planned_start_date }}
+        </td>
+    </tr>
+    <tr class="even">
+        <td class="left">
+            Planned close date:
+        </td>
+        <td class="right">
+            {{ item.planned_end_date }}
+        </td>
+    </tr>
+    <tr class="odd">
+        <td class="left">
+            Status:
+        </td>
+        <td class="right">
+            {% status_translate item.status %}
+        </td>
+    </tr>
+    <tr class="even">
+        <td class="left">
+            Team:
+        </td>
+        <td class="right">
+            {{ item.team }}
+        </td>
+    </tr>
+</table>
 
 
 {% endblock %}

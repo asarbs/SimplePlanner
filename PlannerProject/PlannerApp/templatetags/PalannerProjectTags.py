@@ -9,22 +9,28 @@ logger = logging.getLogger(__name__)
 
 register = template.Library()
 
-def build_item_line(nodeItem):
-    ss = '<a href="' + reverse('item-details', args=(nodeItem.id,) ) + '">' + str(nodeItem.name) + '</a>'
-    ss += ' Status: ' + str(Status(nodeItem.status))
-    ss += ' Planned Duration: ' + str(nodeItem.planned_start_date) + ' - ' + str(nodeItem.planned_end_date)
-    ss += ' Duration: ' + str(nodeItem.start_date) + ' - ' + str(nodeItem.end_date)
+def build_item_line(nodeItem, line):
+    line_class = "even" if line % 2 == 0 else "odd"
+    ss = '<tr class="'+ line_class +'">\n'
+    ss += '<td style="padding-left: '+ (str(nodeItem.generation * 10) ) +'px;"><a href="' + reverse('item-details', args=(nodeItem.id,) ) + '">' + str(nodeItem.name) + '</a></td>\n'
+    ss += '<td>' + str(Status(nodeItem.status)) + '</td>\n'
+    ss += '<td>' + str(nodeItem.planned_start_date) + ' - ' + str(nodeItem.planned_end_date)  + '</td>\n'
+    ss += '<td>' + str(nodeItem.start_date) + ' - ' + str(nodeItem.end_date) + '</td>\n'
+    ss += '<td>' + str(nodeItem.team) + '</td>\n'
+    ss += '</tr>\n'
     return ss
 
 @register.simple_tag
-def build_tree(nodeItems):
-    ss = '<ul class="tree">'
+def build_tree(nodeItems, line=0):
+    if nodeItems.count() == 0:
+        return ""
+    ss = ""
     for nodeItem in nodeItems:
-        ss += '<li>'
-        ss += build_item_line(nodeItem)
-        ss += build_tree(Item.objects.filter(parent=nodeItem))
-        ss += '</li>'
-    ss += '</ul>'
+        ss += build_item_line(nodeItem, line)
+        for ch in nodeItem.get_descendants():
+            line += 1
+            ss += build_item_line(ch, line)
+        line += 1
     return mark_safe(ss)
 
 
@@ -66,22 +72,6 @@ def get_strint_items(sprint):
         ss += "</li>"
     ss += "</ul>"
     return mark_safe(ss)
-
-
-#[
-#         ['2014Spring', 'Spring 2014', 'spring', new Date(2014, 2, 22), new Date(2014, 5, 20), null, 100, null],
-#         ['2014Summer', 'Summer 2014', 'summer', new Date(2014, 5, 21), new Date(2014, 8, 20), null, 100, null],
-#         ['2014Autumn', 'Autumn 2014', 'autumn', new Date(2014, 8, 21), new Date(2014, 11, 20), null, 100, null]
-#]
-
-      # data.addColumn('string', 'Task ID');
-      # data.addColumn('string', 'Task Name');
-      # data.addColumn('string', 'Resource');
-      # data.addColumn('date', 'Start Date');
-      # data.addColumn('date', 'End Date');
-      # data.addColumn('number', 'Duration');
-      # data.addColumn('number', 'Percent Complete');
-      # data.addColumn('string', 'Dependencies');
 
 def build_data_chart_one_line(item, ansesstor="null"):
     item_planned_start_date_year = 0
@@ -133,3 +123,6 @@ def get_gnat_chart_data(projectItems):
     return mark_safe(ss)
 
 
+@register.simple_tag
+def status_translate(statusInt):
+    return Status(statusInt)

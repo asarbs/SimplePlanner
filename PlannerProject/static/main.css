@@ -37,6 +37,21 @@
   border-left: 1px solid #8298ba;
 }
 
+div.two_column_left
+{
+     height: 30px;
+     width: 40%;
+     float: left;
+}
+
+div.two_column_right
+{
+     height: 30px;
+     width: 60%;
+     float: left;
+}
+
+
 body {
     background-color : #FFFFFF;
     font-family : Roboto, sans-serif;
@@ -51,7 +66,12 @@ a {
 }
 
 ul.tree {
-    margin-left: 15px
+    margin-left: 15px;
+}
+
+ul.tree li {
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
 a:hover {
@@ -107,4 +127,34 @@ div.list_of_actions
 div.list_of_actions a
 {
 
+}
+
+table.content
+{
+  width: 100%;
+}
+
+table.content tr td
+{
+  padding: 5px;
+}
+
+table.content tr td.left
+{
+  text-align: right;
+}
+
+table.content tr td.right
+{
+  text-align: left;
+}
+
+table.content tr.even
+{
+  background-color: #a9c7de;
+}
+
+table.content tr.odd
+{
+  background-color: #b8dbf5;
 }

@@ -71,6 +71,11 @@ class Item(MPTTModel):
             out += str(parent.id) + "."
         return out[0:-1]
 
+    @property
+    def generation(self):
+        return self.get_ancestors().count()
+    
+
     class MPTTMeta:
         order_insertion_by = ['priority']
 
