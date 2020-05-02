@@ -81,6 +81,12 @@ div#top img
     margin-top: 12px;
 }
 
+div#top div.top_right
+{
+    with: 300px;
+    vertical-align: middle;
+}
+
 div#menu
 {
     background-color: #bcc2bf;
