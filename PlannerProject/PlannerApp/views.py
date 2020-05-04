@@ -1,11 +1,14 @@
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import RequestContext
 from django.urls import reverse
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+
 import logging
+import json
 from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
@@ -163,3 +166,11 @@ class SprintDetails(DetailView):
     def get_queryset(self):
         queryset = super(DetailView, self).get_queryset()
         return queryset
+
+def ajax_start_item(request, pk):
+    logger.debug(u'is_ajax=={0}'.format(request.is_ajax()))
+    if request.method == "GET" and request.is_ajax():
+        startItem(request,pk)
+        return HttpResponse(json.dumps({'status': "OK"}), content_type="application/json")
+    else:
+        return "OK"

@@ -10,7 +10,14 @@
 
 {% block javascript %}
 <script type="text/javascript"> 
-
+function startItem(itemId)
+{
+    $.get("/PlannerApp/ajax-start-item/"+itemId, function(data, status)
+    {
+        console.log(data)
+        alert("Data: " + data['status'] + "\nStatus: " + status);
+    });
+}
 </script>
 {% endblock %}
 

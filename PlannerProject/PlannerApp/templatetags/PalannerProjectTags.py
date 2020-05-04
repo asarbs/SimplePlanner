@@ -9,14 +9,20 @@ logger = logging.getLogger(__name__)
 
 register = template.Library()
 
+def start_button(nodeItem):
+    ss = '<td>{0} <button type="button" onclick="startItem({1})">Start</button></td>\n'.format(Status(nodeItem.status), nodeItem.id)
+
+    return ss
+
 def build_item_line(nodeItem, line):
     line_class = "even" if line % 2 == 0 else "odd"
     ss = '<tr class="'+ line_class +'">\n'
     ss += '<td style="padding-left: '+ (str(nodeItem.generation * 10) ) +'px;"><a href="' + reverse('item-details', args=(nodeItem.id,) ) + '">' + str(nodeItem.name) + '</a></td>\n'
-    ss += '<td>' + str(Status(nodeItem.status)) + '</td>\n'
+    ss += start_button(nodeItem)
     ss += '<td>' + str(nodeItem.planned_start_date) + ' - ' + str(nodeItem.planned_end_date)  + '</td>\n'
     ss += '<td>' + str(nodeItem.start_date) + ' - ' + str(nodeItem.end_date) + '</td>\n'
     ss += '<td>' + str(nodeItem.team) + '</td>\n'
+    ss += '<td>' + str(nodeItem.sprint) + '</td>\n'
     ss += '</tr>\n'
     return ss
 

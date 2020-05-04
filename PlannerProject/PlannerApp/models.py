@@ -14,6 +14,7 @@ class Status(Enum):
     IN_TESTING = 4
     DONE = 5
     REJECTED = 6
+    DEPLOYED = 7
 
     def __str__(self):
         return u'{0}'.format(self.name)
@@ -55,6 +56,7 @@ class Item(MPTTModel):
     planned_end_date = models.DateField(default=datetime.date.today,null=True, blank=True)
     status = models.IntegerField(choices=[(tag.value, tag.name) for tag in Status], default=Status.NEW ) 
     team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.CASCADE)
+    description = models.TextField(null=True, blank=True)
 
     @property
     def length(self):
