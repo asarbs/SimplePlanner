@@ -12,17 +12,7 @@ Project progress: {% project_progress project %}
 
 <br><br>
 
-<table class="content" border="0">
-  <tr>
-    <th>Item name</th>
-    <th>Status</th>
-    <th>Planned dates</th>
-    <th>Execution dates</th>
-    <th>Team</th>
-    <th>Sprints</th>
-  </tr>
 {% build_tree project.items.all %}
-</table>
 
   <script type="text/javascript">
     google.charts.load('current', {'packages':['gantt']});

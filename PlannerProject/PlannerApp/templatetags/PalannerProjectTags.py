@@ -2,7 +2,7 @@ from django import template
 from django.utils.safestring import mark_safe
 from django.urls import reverse
 from django.db.models import Q
-from PlannerApp.models import Item, Status, Team
+from PlannerApp.models import Item, Status, Team, Project
 
 import logging
 logger = logging.getLogger(__name__)
@@ -30,13 +30,24 @@ def build_item_line(nodeItem, line):
 def build_tree(nodeItems, line=0):
     if nodeItems.count() == 0:
         return ""
-    ss = ""
+    ss = """
+<table class="content" border="0">
+  <tr>
+    <th>Item name</th>
+    <th>Status</th>
+    <th>Planned dates</th>
+    <th>Execution dates</th>
+    <th>Team</th>
+    <th>Sprints</th>
+</tr>
+    """
     for nodeItem in nodeItems:
         ss += build_item_line(nodeItem, line)
         for ch in nodeItem.get_descendants():
             line += 1
             ss += build_item_line(ch, line)
         line += 1
+    ss += "</table>"
     return mark_safe(ss)
 
 
@@ -47,10 +58,14 @@ def project_progress(project):
 
 @register.simple_tag
 def build_item_affiliation(nodeItem):
-    ss = 'Project Parh:'
+    ss = ''
+    project = Project.objects.get(items=nodeItem.get_root())
+    ss += '<a href="' + reverse('project-details', args=(project.id,) ) + '">' + str(project) + '</a>'
     for item in nodeItem.get_ancestors():
         ss += " > "
         ss += '<a href="' + reverse('item-details', args=(item.id,) ) + '">' + str(item.name) + '</a>'
+
+
     return mark_safe(ss)
 
 
