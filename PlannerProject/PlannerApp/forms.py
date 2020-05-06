@@ -3,6 +3,7 @@ from django.forms import ModelForm, CharField
 from django.forms import DateInput
 from django.forms import IntegerField
 from django.forms import HiddenInput
+from django.forms import Select
 from PlannerApp.models import Project, Item, Team
 
 
@@ -31,10 +32,10 @@ class NewItemForm(ModelForm):
         model = Item
         fields = ['name', 'priority', 'sprint', 'assignment', 'start_date', 'end_date', 'status', 'planned_start_date', 'planned_end_date', 'team', 'description']
         widgets = {
-            'start_date': DateInput(format=('%d.$m.%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
-            'end_date': DateInput(format=('%d.$m.%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
-            'planned_start_date': DateInput(format=('%d.$m.%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
-            'planned_end_date': DateInput(format=('%d.$m.%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
+            'start_date': DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
+            'end_date': DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
+            'planned_start_date': DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
+            'planned_end_date': DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
         }
 
 class NewTeamForm(ModelForm):

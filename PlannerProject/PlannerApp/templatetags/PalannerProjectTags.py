@@ -50,6 +50,26 @@ def build_tree(nodeItems, line=0):
     ss += "</table>"
     return mark_safe(ss)
 
+@register.simple_tag
+def build_item_table(nodeItems, line=0):
+    if nodeItems.count() == 0:
+        return ""
+    ss = """
+<table class="content" border="0">
+  <tr>
+    <th>Item name</th>
+    <th>Status</th>
+    <th>Planned dates</th>
+    <th>Execution dates</th>
+    <th>Team</th>
+    <th>Sprints</th>
+</tr>
+    """
+    for nodeItem in nodeItems:
+        ss += build_item_line(nodeItem, line)
+        line += 1
+    ss += "</table>"
+    return mark_safe(ss)
 
 @register.simple_tag
 def project_progress(project):

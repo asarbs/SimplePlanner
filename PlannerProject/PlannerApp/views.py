@@ -106,6 +106,14 @@ class ItemEdit(UpdateView):
     form_class = NewItemForm
     template_name_suffix = '_update_form'
 
+    def form_valid(self, form):
+        item = form.save(commit=False)
+        if item.planned_start_date is not None or item.planned_end_date is not None:
+            if (item.planned_start_date == item.planned_end_date):
+                item.planned_end_date += timedelta(days=1)
+            item.save()
+        return super(ItemEdit, self).form_valid(form)
+
     def get_success_url(self):
         return reverse("item-details", args=(self.object.id,))
 
