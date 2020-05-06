@@ -1,15 +1,9 @@
-{% extends "main.html" %}project
+{% extends "main.html" %}
+{% load PalannerProjectTags %}
 {% block main %}
 
 <h1>My Tasks</h1>
 
-<ul>
-{% for taks in my_task_list %}
-
-<li> {{ taks }} </li>
-
-{% endfor %}
-
-</ul>
+{% build_tree my_task_list %}
 
 {% endblock %}
