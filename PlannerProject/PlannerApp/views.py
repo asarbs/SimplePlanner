@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.urls import reverse
 from django.views.generic.edit import CreateView
+from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
@@ -90,7 +91,7 @@ class ItemAdd(CreateView):
             parent = Item.objects.get(id=form.cleaned_data['item_id'])
             item.insert_at(target=parent, position='last-child', save=True)
             item.save()
-        print(item.planned_start_date == item.planned_end_date)
+        logger.debug(item.planned_start_date == item.planned_end_date)
         if item.planned_start_date == item.planned_end_date:
             item.planned_end_date += timedelta(days=1)
             item.save()
@@ -99,6 +100,14 @@ class ItemAdd(CreateView):
 
     def get_success_url(self):
         return reverse("item-details", args=(self.id,))
+
+class ItemEdit(UpdateView):
+    model = Item
+    form_class = NewItemForm
+    template_name_suffix = '_update_form'
+
+    def get_success_url(self):
+        return reverse("item-details", args=(self.object.id,))
 
 def startItem(request, pk=None): 
     item = Item.objects.get(id=pk)
