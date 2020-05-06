@@ -1,7 +1,7 @@
 {% load static %}
 {{ form.media }}
 <head>
-<title>Tournament Calculator</title>
+<title>Simple Planner</title>
 <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
@@ -18,6 +18,16 @@ function startItem(itemId)
         alert("Data: " + data['status'] + "\nStatus: " + status);
     });
 }
+
+function closeItem(itemId)
+{
+    $.get("/PlannerApp/ajax-close-item/"+itemId, function(data, status)
+    {
+        console.log(data)
+        alert("Data: " + data['status'] + "\nStatus: " + status);
+    });
+}
+
 </script>
 
 {% endblock %}

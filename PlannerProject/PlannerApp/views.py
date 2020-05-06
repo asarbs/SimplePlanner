@@ -191,3 +191,11 @@ def ajax_start_item(request, pk):
         return HttpResponse(json.dumps({'status': "OK"}), content_type="application/json")
     else:
         return "OK"
+
+def ajax_close_item(request, pk):
+    logger.debug(u'is_ajax=={0}'.format(request.is_ajax()))
+    if request.method == "GET" and request.is_ajax():
+        endItem(request,pk)
+        return HttpResponse(json.dumps({'status': "OK"}), content_type="application/json")
+    else:
+        return "OK"

@@ -10,7 +10,12 @@ logger = logging.getLogger(__name__)
 register = template.Library()
 
 def start_button(nodeItem):
-    ss = '<td>{0} <button type="button" onclick="startItem({1})">Start</button></td>\n'.format(Status(nodeItem.status), nodeItem.id)
+    button = ""
+    if Status(nodeItem.status) == Status.NEW:
+        button = '<button type="button" onclick="startItem({0})">Start</button>'.format(nodeItem.id)
+    elif Status(nodeItem.status) == Status.IN_PROGRESS:
+        button = '<button type="button" onclick="closeItem({0})">Close</button>'.format(nodeItem.id)
+    ss = '<td>{0}</td><td>{1}</td>\n'.format(Status(nodeItem.status), button)
 
     return ss
 
@@ -19,7 +24,7 @@ def build_item_line(nodeItem, line):
     ss = '<tr class="'+ line_class +'">\n'
     ss += '<td style="padding-left: '+ (str(nodeItem.generation * 10) ) +'px;"><a href="' + reverse('item-details', args=(nodeItem.id,) ) + '">' + str(nodeItem.name) + '</a></td>\n'
     ss += start_button(nodeItem)
-    ss += '<td>' + str(nodeItem.planned_start_date) + ' - ' + str(nodeItem.planned_end_date)  + '</td>\n'
+    ss += '<td>' + str(nodeItem.planned_start_date) + ' - ' + str(nodeItem.planned_end_date) + '</td>\n'
     ss += '<td>' + str(nodeItem.start_date) + ' - ' + str(nodeItem.end_date) + '</td>\n'
     ss += '<td>' + str(nodeItem.team) + '</td>\n'
     ss += '<td>' + str(nodeItem.sprint) + '</td>\n'
@@ -34,7 +39,7 @@ def build_tree(nodeItems, line=0):
 <table class="content" border="0">
   <tr>
     <th>Item name</th>
-    <th>Status</th>
+    <th colspan="2">Status</th>
     <th>Planned dates</th>
     <th>Execution dates</th>
     <th>Team</th>
@@ -58,7 +63,7 @@ def build_item_table(nodeItems, line=0):
 <table class="content" border="0">
   <tr>
     <th>Item name</th>
-    <th>Status</th>
+    <th colspan="2">Status</th>
     <th>Planned dates</th>
     <th>Execution dates</th>
     <th>Team</th>
