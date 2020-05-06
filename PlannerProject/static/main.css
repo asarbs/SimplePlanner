@@ -142,6 +142,7 @@ table.content tr td
 table.content tr td.left
 {
   text-align: right;
+  width: 20%
 }
 
 table.content tr td.right
