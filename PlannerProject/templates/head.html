@@ -17,7 +17,6 @@ function startItem(itemId)
         console.log("statusItem_"+itemId)
         if (data['status'] == "OK")
         {
-
             var elem = document.getElementById( "statusItem_"+itemId )
             elem.innerHTML = data['newState']
         }

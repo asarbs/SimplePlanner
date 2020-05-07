@@ -23,7 +23,7 @@ def start_button(nodeItem):
 def build_team_select(selectedTeam, nodeItem):
     teams = Team.objects.all()
     ss = '<select id="select_team_{0}" onchange="updateTeam({0})">\n'.format(nodeItem.id)
-    ss += '<option value="-">--</option>\n'
+    ss += '<option value="0">--</option>\n'
     for team in teams:
         selected = ''
         if team == selectedTeam:
@@ -40,7 +40,7 @@ def build_item_line(nodeItem, line):
     ss += '<td style="padding-left: '+ (str(nodeItem.generation * 10) ) +'px;"><a href="' + reverse('item-details', args=(nodeItem.id,) ) + '">' + str(nodeItem.name) + '</a></td>\n'
     ss += start_button(nodeItem)
     ss += '<td>' + str(nodeItem.planned_start_date) + ' - ' + str(nodeItem.planned_end_date) + '</td>\n'
-    ss += '<td>' + str(nodeItem.start_date) + ' - ' + str(nodeItem.end_date) + '</td>\n'
+    ss += '<td id="dates_'+ str(nodeItem.id) +'">' + str(nodeItem.start_date) + ' - ' + str(nodeItem.end_date) + '</td>\n'
     ss += '<td>' + build_team_select(nodeItem.team, nodeItem) + '</td>\n'
     ss += '<td>' + str(nodeItem.sprint) + '</td>\n'
     ss += '</tr>\n'

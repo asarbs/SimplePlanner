@@ -190,7 +190,7 @@ def ajax_start_item(request, pk):
         startItem(request,pk)
         return HttpResponse(json.dumps({'status': "OK", 'newState': str(Status.IN_PROGRESS)}), content_type="application/json")
     else:
-        return "NOK"
+        return HttpResponse(json.dumps({'status': "NOK"}), content_type="application/json")
 
 def ajax_close_item(request, pk):
     logger.debug(u'is_ajax=={0}'.format(request.is_ajax()))
@@ -198,13 +198,16 @@ def ajax_close_item(request, pk):
         endItem(request,pk)
         return HttpResponse(json.dumps({'status': "OK", 'newState': str(Status.DONE)}), content_type="application/json")
     else:
-        return "NOK"
+        return HttpResponse(json.dumps({'status': "NOK"}), content_type="application/json")
 
 def ajax_set_team(request, pk, team_id):
     logger.debug(u'is_ajax=={0}'.format(request.is_ajax()))
     if request.method == "GET" and request.is_ajax():
         item = Item.objects.get(id=pk)
-        item.team = Team.objects.get(id=team_id)
+        try:
+            item.team = Team.objects.get(id=team_id)
+        except Team.DoesNotExist:
+            item.team = None
         item.save()
         return HttpResponse(json.dumps({'status': "OK"}), content_type="application/json")
     else:
