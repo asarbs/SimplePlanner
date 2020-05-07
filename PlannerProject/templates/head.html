@@ -14,8 +14,13 @@ function startItem(itemId)
 {
     $.get("/PlannerApp/ajax-start-item/"+itemId, function(data, status)
     {
-        console.log(data)
-        alert("Data: " + data['status'] + "\nStatus: " + status);
+        console.log("statusItem_"+itemId)
+        if (data['status'] == "OK")
+        {
+
+            var elem = document.getElementById( "statusItem_"+itemId )
+            elem.innerHTML = data['newState']
+        }
     });
 }
 
@@ -24,7 +29,22 @@ function closeItem(itemId)
     $.get("/PlannerApp/ajax-close-item/"+itemId, function(data, status)
     {
         console.log(data)
-        alert("Data: " + data['status'] + "\nStatus: " + status);
+        if (data['status'] == "OK")
+        {
+            var elem = document.getElementById( "statusItem_"+itemId )
+            elem.innerHTML = data['newState']
+        }
+    });
+}
+
+function updateTeam(itemId)
+{
+    var elem = document.getElementById( "select_team_"+itemId )
+    var selected_team = elem.options[elem.selectedIndex].value;
+    $.get('/PlannerApp/ajax_set_team/' + itemId + "/" + selected_team, function(data, status)
+    {
+        console.log(data)
+        console.log(status)
     });
 }
 

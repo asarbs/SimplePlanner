@@ -18,6 +18,7 @@ class CustomMPTTModelAdmin(DraggableMPTTAdmin):
     mptt_level_indent = 20
     list_display = ('tree_actions', 'indented_title', 'priority', 'assignment', 'status', 'start_date', 'end_date', 'planned_start_date', 'planned_end_date', 'length', 'item_id', 'team')
     list_display_links = ('indented_title', )
+    list_editable = ( 'status', 'planned_start_date', 'planned_end_date', 'team')
 
 
 @admin.register(Team)

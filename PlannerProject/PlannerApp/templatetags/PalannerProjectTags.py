@@ -15,9 +15,24 @@ def start_button(nodeItem):
         button = '<button type="button" onclick="startItem({0})">Start</button>'.format(nodeItem.id)
     elif Status(nodeItem.status) == Status.IN_PROGRESS:
         button = '<button type="button" onclick="closeItem({0})">Close</button>'.format(nodeItem.id)
-    ss = '<td>{0}</td><td>{1}</td>\n'.format(Status(nodeItem.status), button)
+    ss = '<td id="statusItem_'+ str(nodeItem.id) +'">{0}</td><td>{1}</td>\n'.format(Status(nodeItem.status), button)
 
     return ss
+
+
+def build_team_select(selectedTeam, nodeItem):
+    teams = Team.objects.all()
+    ss = '<select id="select_team_{0}" onchange="updateTeam({0})">\n'.format(nodeItem.id)
+    ss += '<option value="-">--</option>\n'
+    for team in teams:
+        selected = ''
+        if team == selectedTeam:
+            selected = 'selected'
+        ss += '<option value="{0}" {2}>{1}</option>\n'.format(team.id, team, selected)
+
+    ss += '</select>\n'
+    return ss
+
 
 def build_item_line(nodeItem, line):
     line_class = "even" if line % 2 == 0 else "odd"
@@ -26,7 +41,7 @@ def build_item_line(nodeItem, line):
     ss += start_button(nodeItem)
     ss += '<td>' + str(nodeItem.planned_start_date) + ' - ' + str(nodeItem.planned_end_date) + '</td>\n'
     ss += '<td>' + str(nodeItem.start_date) + ' - ' + str(nodeItem.end_date) + '</td>\n'
-    ss += '<td>' + str(nodeItem.team) + '</td>\n'
+    ss += '<td>' + build_team_select(nodeItem.team, nodeItem) + '</td>\n'
     ss += '<td>' + str(nodeItem.sprint) + '</td>\n'
     ss += '</tr>\n'
     return ss
