@@ -17,8 +17,11 @@ function startItem(itemId)
         console.log("statusItem_"+itemId)
         if (data['status'] == "OK")
         {
+            console.log(data);
             var elem = document.getElementById( "statusItem_"+itemId )
             elem.innerHTML = data['newState']
+            var elem = document.getElementById( "dates_"+itemId )
+            elem.innerHTML = data['start_date'] + "-" + data['end_date']
         }
     });
 }
@@ -30,8 +33,11 @@ function closeItem(itemId)
         console.log(data)
         if (data['status'] == "OK")
         {
+            console.log(data);
             var elem = document.getElementById( "statusItem_"+itemId )
             elem.innerHTML = data['newState']
+            var elem = document.getElementById( "dates_"+itemId )
+            elem.innerHTML = data['start_date'] + "-" + data['end_date']
         }
     });
 }

@@ -38,11 +38,11 @@ def build_item_line(nodeItem, line):
     line_class = "even" if line % 2 == 0 else "odd"
     ss = '<tr class="'+ line_class +'">\n'
     ss += '<td style="padding-left: '+ (str(nodeItem.generation * 10) ) +'px;"><a href="' + reverse('item-details', args=(nodeItem.id,) ) + '">' + str(nodeItem.name) + '</a></td>\n'
-    ss += start_button(nodeItem)
     ss += '<td>' + str(nodeItem.planned_start_date) + ' - ' + str(nodeItem.planned_end_date) + '</td>\n'
     ss += '<td id="dates_'+ str(nodeItem.id) +'">' + str(nodeItem.start_date) + ' - ' + str(nodeItem.end_date) + '</td>\n'
     ss += '<td>' + build_team_select(nodeItem.team, nodeItem) + '</td>\n'
     ss += '<td>' + str(nodeItem.sprint) + '</td>\n'
+    ss += start_button(nodeItem)
     ss += '</tr>\n'
     return ss
 
@@ -54,11 +54,12 @@ def build_tree(nodeItems, line=0):
 <table class="content" border="0">
   <tr>
     <th>Item name</th>
-    <th colspan="2">Status</th>
+    <th>Status</th>
     <th>Planned dates</th>
     <th>Execution dates</th>
     <th>Team</th>
     <th>Sprints</th>
+    <th>Action</th>
 </tr>
     """
     for nodeItem in nodeItems:

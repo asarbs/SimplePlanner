@@ -117,19 +117,23 @@ class ItemEdit(UpdateView):
     def get_success_url(self):
         return reverse("item-details", args=(self.object.id,))
 
-def startItem(request, pk=None): 
+
+def setItemStatus(request, pk, status):
     item = Item.objects.get(id=pk)
-    item.status = Status.IN_PROGRESS.value
-    item.start_date = datetime.now()
+    item.status = status.value
+    if status == Status.IN_PROGRESS:
+        item.start_date = datetime.now()
+    elif status == Status.DONE:
+        item.end_date = datetime.now()
     item.assignment = request.user
     item.save()
-    return HttpResponseRedirect(reverse("item-details", args=(pk,)))
+    return item
 
+def startItem(request, pk=None): 
+    setItemStatus(request, pk, Status.IN_PROGRESS)
+    return HttpResponseRedirect(reverse("item-details", args=(pk,)))
 def endItem(request, pk=None): 
-    item = Item.objects.get(id=pk)
-    item.status = Status.DONE.value
-    item.end_date = datetime.now()
-    item.save()
+    setItemStatus(request, pk, Status.DONE)
     return HttpResponseRedirect(reverse("item-details", args=(pk,)))
 
 
@@ -187,16 +191,26 @@ class SprintDetails(DetailView):
 def ajax_start_item(request, pk):
     logger.debug(u'is_ajax=={0}'.format(request.is_ajax()))
     if request.method == "GET" and request.is_ajax():
-        startItem(request,pk)
-        return HttpResponse(json.dumps({'status': "OK", 'newState': str(Status.IN_PROGRESS)}), content_type="application/json")
+        item = setItemStatus(request, pk, Status.IN_PROGRESS)
+        d = {'status': "OK",
+        'newState': str(Status.IN_PROGRESS),
+        'start_date': item.start_date.strftime("%m/%d/%Y") if item.start_date is not None else '-#-',
+        'end_date': item.end_date.strftime("%m/%d/%Y") if item.end_date is not None else '-#-',
+        }
+        return HttpResponse(json.dumps(d), content_type="application/json")
     else:
         return HttpResponse(json.dumps({'status': "NOK"}), content_type="application/json")
 
 def ajax_close_item(request, pk):
     logger.debug(u'is_ajax=={0}'.format(request.is_ajax()))
     if request.method == "GET" and request.is_ajax():
-        endItem(request,pk)
-        return HttpResponse(json.dumps({'status': "OK", 'newState': str(Status.DONE)}), content_type="application/json")
+        item = setItemStatus(request, pk, Status.DONE)
+        d = {'status': "OK",
+        'newState': str(Status.DONE),
+        'start_date': item.start_date.strftime("%m/%d/%Y") if item.start_date is not None else '-#-',
+        'end_date': item.end_date.strftime("%m/%d/%Y") if item.end_date is not None else '-#-',
+        }
+        return HttpResponse(json.dumps(d), content_type="application/json")
     else:
         return HttpResponse(json.dumps({'status': "NOK"}), content_type="application/json")
 
