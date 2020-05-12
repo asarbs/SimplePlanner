@@ -42,7 +42,6 @@ def build_item_line(nodeItem, line):
     ss += '<td>{0} - {1}</td>\n'.format(nodeItem.planned_start_date, nodeItem.planned_end_date)
     ss += '<td id="dates_{0}">{1} - {2}</td>\n'.format(nodeItem.id, nodeItem.start_date, nodeItem.end_date)
     ss += '<td>{0}</td>\n'.format(build_team_select(nodeItem.team, nodeItem))
-    ss += '<td>{0}</td>\n'.format(nodeItem.sprint)
     ss += start_button(nodeItem)
     ss += '</tr>\n'
     return ss
@@ -59,7 +58,6 @@ def build_tree(nodeItems, line=0):
     <th>Planned dates</th>
     <th>Execution dates</th>
     <th>Team</th>
-    <th>Sprints</th>
     <th>Action</th>
 </tr>
     """
@@ -93,9 +91,17 @@ def build_item_table(nodeItems, line=0):
     ss += "</table>"
     return mark_safe(ss)
 
+# TODO
 @register.simple_tag
 def project_progress(project):
-    return "project_progress"
+    ss = ""
+    project_items = []
+    for project_item in project.items.all():
+        project_items.append(project_item)
+        for child in project_item.get_descendants(include_self=False):
+            project_items.append(child)
+    logger.debug(project_items)
+    return mark_safe(ss)
 
 
 @register.simple_tag
@@ -110,31 +116,6 @@ def build_item_affiliation(nodeItem):
 
     return mark_safe(ss)
 
-
-@register.simple_tag
-def sprint_details(t_sprint):
-    total = Item.objects.filter(sprint = t_sprint).filter(~Q(status = Status.REJECTED.value)).count()
-    done = Item.objects.filter(sprint = t_sprint).filter(status = Status.DONE.value).count()
-    if total == 0:
-        return None
-    pert = (done/total) * 100
-    return u'{0}/{1} {2}%'.format(done,total,pert)
-
-@register.simple_tag
-def get_sprint_team(sprint):
-    team = Team.objects.filter(sprint=sprint)[0]
-    return team.name
-
-@register.simple_tag
-def get_strint_items(sprint):
-    items = Item.objects.filter(sprint=sprint)
-    ss = "<ul>"
-    for item in items:
-        ss += "<li>"
-        ss += build_item_line(item)
-        ss += "</li>"
-    ss += "</ul>"
-    return mark_safe(ss)
 
 def build_data_chart_one_line(item, ansesstor="null"):
     item_planned_start_date_year = 0

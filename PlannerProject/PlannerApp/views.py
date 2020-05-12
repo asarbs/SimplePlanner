@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 from PlannerApp.models import Project
 from PlannerApp.models import Item
 from PlannerApp.models import Team
-from PlannerApp.models import Sprint
 from PlannerApp.models import Status
 
 from PlannerApp.forms import NewProjectForm
@@ -176,16 +175,6 @@ class TeamList(ListView):
 
     def get_queryset(self):
         queryset = super(TeamList, self).get_queryset()
-        return queryset
-
-
-class SprintDetails(DetailView):
-    model = Sprint
-    template_name = "PlannerApp/sprint_details.html"
-    context_object_name = 'sprint'
-
-    def get_queryset(self):
-        queryset = super(DetailView, self).get_queryset()
         return queryset
 
 def ajax_start_item(request, pk):

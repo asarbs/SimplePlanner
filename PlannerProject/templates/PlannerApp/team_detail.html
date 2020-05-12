@@ -15,14 +15,6 @@
 {% endfor %}
 </ul>
 
-<h3>Sprints:</h3>
-<ul>
-{% for sprint in team.sprint.all %}
-<li>
-    <a href="{% url 'sprint-details' sprint.id %}">{{ sprint }}</a> - {% sprint_details sprint %}
-</li>
-{% endfor %}
-</ul>
 
 
 {% endblock %}

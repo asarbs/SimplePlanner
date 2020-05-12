@@ -22,21 +22,9 @@ class Status(Enum):
     def __unicode__(self):
         return u'{0}'.format(self.name)
 
-class Sprint(models.Model):
-    number = models.IntegerField(verbose_name="Sprint number")
-    start_date = models.DateField(default=datetime.date.today)
-    end_date = models.DateField(default=datetime.date.today)
-
-    def __str__(self):
-        return u'#{0} {1} - {2}'.format(self.number, self.start_date, self.end_date)
-
-    def __unicode__(self):
-        return u'#{0} {1} - {2}'.format(self.number, self.start_date, self.end_date)
-
 class Team(models.Model):
     name = models.CharField(max_length=120)
     teamMembers = models.ManyToManyField(User, blank=True)
-    sprint = models.ManyToManyField(Sprint, null=True, blank=True)
 
     def __str__(self):
         return u'{0}'.format(self.name)
@@ -48,7 +36,6 @@ class Item(MPTTModel):
     name = models.CharField(max_length=500)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     priority = models.FloatField(max_length=25)
-    sprint = models.ManyToManyField(Sprint, blank=True)
     assignment = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
@@ -90,7 +77,6 @@ class Item(MPTTModel):
 class Board(models.Model):
     name = models.CharField(max_length=120)
     Team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    sprints = models.ManyToManyField(Sprint)
 
     def __str__(self):
         return u'{0}'.format(self.name)

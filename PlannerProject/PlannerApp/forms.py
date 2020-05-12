@@ -30,7 +30,7 @@ class NewItemForm(ModelForm):
 
     class Meta:
         model = Item
-        fields = ['name', 'priority', 'sprint', 'assignment', 'start_date', 'end_date', 'status', 'planned_start_date', 'planned_end_date', 'team', 'description']
+        fields = ['name', 'priority', 'assignment', 'start_date', 'end_date', 'status', 'planned_start_date', 'planned_end_date', 'team', 'description']
         widgets = {
             'start_date': DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
             'end_date': DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),

@@ -1,16 +1,11 @@
 from django.contrib import admin
 from mptt.admin import DraggableMPTTAdmin, TreeRelatedFieldListFilter
-from PlannerApp.models import Sprint
 from PlannerApp.models import Item
 from PlannerApp.models import Team
 from PlannerApp.models import Board
 from PlannerApp.models import Project
 
 
-@admin.register(Sprint)
-class SprintAdmin(admin.ModelAdmin):
-    list_display = ('start_date', 'end_date', )
-    list_filter = ()
 
 
 class CustomMPTTModelAdmin(DraggableMPTTAdmin):
