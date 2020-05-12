@@ -78,11 +78,11 @@ def build_item_table(nodeItems, line=0):
 <table class="content" border="0">
   <tr>
     <th>Item name</th>
-    <th colspan="2">Status</th>
+    <th>Status</th>
     <th>Planned dates</th>
     <th>Execution dates</th>
     <th>Team</th>
-    <th>Sprints</th>
+    <th>Action</th>
 </tr>
     """
     for nodeItem in nodeItems:
@@ -100,7 +100,12 @@ def project_progress(project):
         project_items.append(project_item)
         for child in project_item.get_descendants(include_self=False):
             project_items.append(child)
-    logger.debug(project_items)
+    all_items = len(project_items)
+    done_items = 0
+    for item in project_items:
+        if Status(item.status) == Status.DONE:
+            done_items += 1
+    ss = '{0}/{1}'.format(done_items, all_items)
     return mark_safe(ss)
 
 
