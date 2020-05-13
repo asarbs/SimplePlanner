@@ -1,6 +1,9 @@
 from django.urls import path
+from dal import autocomplete
+from django.contrib.auth.models import User
 
 from PlannerApp import views
+from PlannerApp.models import Item
 
 urlpatterns = [
     path(r'', views.index, name="index"),
@@ -19,4 +22,5 @@ urlpatterns = [
     path(r'ajax-start-item/<slug:pk>/', views.ajax_start_item, name="ajax-start-item"),
     path(r'ajax-close-item/<slug:pk>/', views.ajax_close_item, name="ajax-close-item"),
     path(r'ajax_set_team/<slug:pk>/<int:team_id>/', views.ajax_set_team, name="ajax_set_team"),
+    path(r'test-autocomplete/', autocomplete.Select2QuerySetView.as_view(model=User, model_field_name='username'), name='select2_fk'),
 ]

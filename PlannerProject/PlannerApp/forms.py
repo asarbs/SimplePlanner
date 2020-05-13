@@ -1,4 +1,6 @@
 
+from dal import autocomplete
+
 from django.forms import ModelForm, CharField
 from django.forms import DateInput
 from django.forms import IntegerField
@@ -41,4 +43,8 @@ class NewItemForm(ModelForm):
 class NewTeamForm(ModelForm):
     class Meta:
         model = Team
-        fields = ['name']
+        fields = ['name', 'teamMembers']
+
+        widgets = {
+            'teamMembers': autocomplete.ModelSelect2(url='select2_fk', attrs={'data-placeholder': 'Autocomplete ...','data-html': True})
+        }

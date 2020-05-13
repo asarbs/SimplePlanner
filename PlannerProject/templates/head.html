@@ -53,6 +53,10 @@ function updateTeam(itemId)
     });
 }
 
+$(document).on('autocompleteLightInitialize', '[data-autocomplete-light-function=select2]', function() {
+    // do select2 configuration on $(this)
+})
+
 </script>
 
 {% endblock %}
