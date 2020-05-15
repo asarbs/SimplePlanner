@@ -1,0 +1,16 @@
+{% extends "main.html" %}
+{% block main %}
+
+<h1>Team item</h1>
+
+<form action="{% url "team-edit" object.id %}" method="POST">
+  {% csrf_token %}
+    <table class="paleblue">
+    {{ form }}
+
+    {{ form.media }}
+    </table>
+  <input id="save_contact" type="submit" value="Save" class="button" />
+</form>
+
+{% endblock %}

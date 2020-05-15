@@ -7,6 +7,10 @@ from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.contrib.auth.models import User
+
+
+from dal import autocomplete
 
 import logging
 import json
@@ -177,6 +181,18 @@ class TeamList(ListView):
         queryset = super(TeamList, self).get_queryset()
         return queryset
 
+class TeamEdit(UpdateView):
+    model = Team
+    form_class = NewTeamForm
+    template_name_suffix = '_update_form'
+
+    def form_valid(self, form):
+        return super(TeamEdit, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse("team-details", args=(self.object.id,))
+
+
 def ajax_start_item(request, pk):
     logger.debug(u'is_ajax=={0}'.format(request.is_ajax()))
     if request.method == "GET" and request.is_ajax():
@@ -215,3 +231,14 @@ def ajax_set_team(request, pk, team_id):
         return HttpResponse(json.dumps({'status': "OK"}), content_type="application/json")
     else:
         return HttpResponse(json.dumps({'status': "NOK"}), content_type="application/json")
+
+class UserAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return User.objects.mone()
+
+        qs = User.objects.all()
+
+        if self.q:
+            qs = qs.filter(username__istartswith=self.q)
+        return qs
