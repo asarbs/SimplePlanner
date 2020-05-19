@@ -46,5 +46,5 @@ class NewTeamForm(ModelForm):
         fields = ['name', 'teamMembers']
 
         widgets = {
-            'teamMembers': autocomplete.ModelSelect2Multiple(url='select2_fk', attrs={'data-placeholder': 'Autocomplete ...','data-html': True})
+            'teamMembers': autocomplete.ModelSelect2Multiple(url='user-autocomplete', attrs={'data-placeholder': 'Autocomplete ...','data-html': True})
         }
