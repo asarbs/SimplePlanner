@@ -1,3 +1,7 @@
+from datetime import datetime, timedelta
+import json
+import logging
+
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -9,22 +13,17 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.models import User
 
-
 from dal import autocomplete
-
-import logging
-import json
-from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
-from PlannerApp.models import Project
 from PlannerApp.models import Item
-from PlannerApp.models import Team
+from PlannerApp.models import Project
 from PlannerApp.models import Status
+from PlannerApp.models import Team
 
-from PlannerApp.forms import NewProjectForm
 from PlannerApp.forms import NewItemForm
+from PlannerApp.forms import NewProjectForm
 from PlannerApp.forms import NewTeamForm
 
 # Create your views here.
