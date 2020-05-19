@@ -7,6 +7,7 @@
   {% csrf_token %}
     <table class="paleblue">
     {{ form }}
+    {{ form.media }}
     </table>
   <input id="save_contact" type="submit" value="Save" class="button" />
 </form>
