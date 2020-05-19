@@ -1,22 +1,14 @@
 {% load static %}
 
 <div id="menu" class="column_left">
+<h2>Menu</h2>
+
 <ul>
+    {% for key, values in page_menu.items %}
     <li>
-        <a href="{% url 'project-list' %}">List of project</a>
+        <a href="{{ values }}">{{ key }}</a>
     </li>
-    <li>
-        <a href="{% url 'project-create' %}">Create new project</a>
-    </li>
-    <li>
-        <a href="{% url 'my_tasks' %}">My Tasks</a>
-    </li>
-    <li>
-        <a href="{% url 'team-list' %}">Team List</a>
-    </li>
-    <li>
-        <a href="{% url 'team-create' %}">Creat new team</a>
-    </li>
+    {% endfor %}
 </ul>
 
 </div>
