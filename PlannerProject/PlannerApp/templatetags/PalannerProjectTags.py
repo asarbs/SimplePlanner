@@ -160,7 +160,7 @@ def foo(projectItems, ansesstor="null"):
     for item in projectItems:
         s = build_data_chart_one_line(item, ansesstor)
         lines.append(s)
-        lines.extend(foo(item.get_children(), item.item_id))
+        lines.extend(foo(item.get_children()))
     return lines
 
 @register.simple_tag
