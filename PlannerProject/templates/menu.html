@@ -1,14 +1,9 @@
 {% load static %}
+{% load PalannerProjectTags %}
 
 <div id="menu" class="column_left">
 <h2>Menu</h2>
 
-<ul>
-    {% for key, values in page_menu.items %}
-    <li>
-        <a href="{{ values }}">{{ key }}</a>
-    </li>
-    {% endfor %}
-</ul>
+{% page_menu %}
 
 </div>

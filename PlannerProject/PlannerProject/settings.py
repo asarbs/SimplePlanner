@@ -67,7 +67,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'PlannerApp.menus.show_page_menu'
             ],
         'libraries': {
                 'PalannerProjectTags': "PlannerApp.templatetags.PalannerProjectTags",

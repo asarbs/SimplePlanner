@@ -103,6 +103,26 @@ a {
     text-decoration : none;
 }
 
+a:hover {
+    color : #004363;
+    text-decoration : underline;
+}
+
+a.add_new {
+  background-color: #4CAF50;
+  color: white;
+  padding: 3px 3px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  float: right;
+}
+
+
+ul.menu {
+  margin-left: 15px;
+}
+
 ul.tree {
     margin-left: 15px;
 }
@@ -112,10 +132,7 @@ ul.tree li {
     margin-bottom: 2px;
 }
 
-a:hover {
-    color : #004363;
-    text-decoration : underline;
-}
+
 
 .column_left {
   float: left;
