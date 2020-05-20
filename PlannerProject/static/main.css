@@ -109,11 +109,9 @@ a:hover {
 }
 
 a.add_new {
-  display:block;
   background-color: #4CAF50;
   color: white;
-  text-align: center;
-  width: 20px;
+  padding: 3px 3px;
   border: none;
   border-radius: 2px;
   cursor: pointer;
@@ -123,10 +121,6 @@ a.add_new {
 
 ul.menu {
   margin-left: 15px;
-}
-
-ul.menu li {
-    margin: 2px 0px;
 }
 
 ul.tree {

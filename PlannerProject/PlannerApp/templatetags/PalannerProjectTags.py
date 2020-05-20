@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 register = template.Library()
 
 
+
 @register.simple_tag
 def build_tree(nodeItems, line=0):
     if nodeItems.count() == 0:
@@ -148,8 +149,6 @@ def build_menu(menu_list):
         ss += '<li><a href="{1}">{0}</a>'.format(item['name'], item['url_reverse'])
         if 'add_new' in item:
             ss += u'<a href="{0}" class="add_new">+</a>'.format(item['add_new']['url_reverse'])
-        if 'url_edit' in item:
-            ss += u'<a href="{0}" class="add_new">e</a>'.format(item['url_edit'])
         if 'children' in item:
             ss += build_menu(item['children'])
         ss += '</li>'
@@ -160,7 +159,7 @@ def build_menu(menu_list):
 def page_menu():
 
     page_menu = []
-    page_menu.append({'name':'List of project', 'url_reverse': reverse('project-list'), 'children':[], 'add_new':{'url_reverse': reverse('project-create')} })
+    page_menu.append({'name':'List of project', 'url_reverse': reverse('project-list'), 'children':[], 'add_new':{'name':'Create new project', 'url_reverse': reverse('project-create')} })
     projects = Project.objects.all()
     for project in projects:
         page_menu[-1]['children'].append({'name':project, 'url_reverse': reverse('project-details',args=(project.id,))})
@@ -168,10 +167,10 @@ def page_menu():
 
     page_menu.append({'name':'My Tasks', 'url_reverse': reverse('my_tasks') })
 
-    page_menu.append({'name':'Team List', 'url_reverse': reverse('team-list'), 'children':[], 'add_new':{ 'url_reverse': reverse('team-create')}})
+    page_menu.append({'name':'Team List', 'url_reverse': reverse('team-list'), 'children':[], 'add_new':{'name':'Creat new team', 'url_reverse': reverse('team-create')}})
     teams = Team.objects.all()
     for team in teams:
-        page_menu[-1]['children'].append({'name':team, 'url_reverse': reverse('team-details',args=(team.id,)), 'url_edit': reverse('team-edit',args=(team.id,))})
+        page_menu[-1]['children'].append({'name':team, 'url_reverse': reverse('team-edit',args=(team.id,))})
 
 
     return mark_safe(build_menu(page_menu))
