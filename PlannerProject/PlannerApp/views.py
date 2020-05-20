@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import json
 import logging
+logger = logging.getLogger(__name__)
 
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
@@ -14,8 +15,6 @@ from django.views.generic.list import ListView
 from django.contrib.auth.models import User
 
 from dal import autocomplete
-
-logger = logging.getLogger(__name__)
 
 from PlannerApp.models import Item
 from PlannerApp.models import Project
@@ -93,7 +92,6 @@ class ItemAdd(CreateView):
             parent = Item.objects.get(id=form.cleaned_data['item_id'])
             item.insert_at(target=parent, position='last-child', save=True)
             item.save()
-        logger.debug(item.planned_start_date == item.planned_end_date)
         if item.planned_start_date == item.planned_end_date:
             item.planned_end_date += timedelta(days=1)
             item.save()
@@ -147,7 +145,6 @@ class MyTasksList(ListView):
     def get_queryset(self):
         queryset = super(MyTasksList, self).get_queryset()
         queryset = queryset.filter(assignment=self.request.user)
-        logger.debug(queryset)
         return queryset
 
 class TeamAdd(CreateView):
@@ -171,6 +168,11 @@ class TeamDetails(DetailView):
         team = super(TeamDetails, self).get_object(queryset)
         return team
 
+    def get_context_data(self, **kwargs):
+        context = super(TeamDetails, self).get_context_data(**kwargs)
+        context['team_tasks'] = Item.objects.filter(team=self.object)
+        return context
+
 class TeamList(ListView):
     model = Team
     template_name = "PlannerApp/team_list.html"
@@ -193,7 +195,6 @@ class TeamEdit(UpdateView):
 
 
 def ajax_start_item(request, pk):
-    logger.debug(u'is_ajax=={0}'.format(request.is_ajax()))
     if request.method == "GET" and request.is_ajax():
         item = setItemStatus(request, pk, Status.IN_PROGRESS)
         d = {'status': "OK",
@@ -206,7 +207,6 @@ def ajax_start_item(request, pk):
         return HttpResponse(json.dumps({'status': "NOK"}), content_type="application/json")
 
 def ajax_close_item(request, pk):
-    logger.debug(u'is_ajax=={0}'.format(request.is_ajax()))
     if request.method == "GET" and request.is_ajax():
         item = setItemStatus(request, pk, Status.DONE)
         d = {'status': "OK",
@@ -219,7 +219,6 @@ def ajax_close_item(request, pk):
         return HttpResponse(json.dumps({'status': "NOK"}), content_type="application/json")
 
 def ajax_set_team(request, pk, team_id):
-    logger.debug(u'is_ajax=={0}'.format(request.is_ajax()))
     if request.method == "GET" and request.is_ajax():
         item = Item.objects.get(id=pk)
         try:

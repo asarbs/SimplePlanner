@@ -132,7 +132,6 @@ def get_gnat_chart_data(projectItems):
     lines = []
     lines.extend(foo(projectItems))
     ss = '[\n' + ',\n'.join(lines) + "\n]"
-    logger.debug(ss)
     return mark_safe(ss)
 
 
@@ -144,7 +143,6 @@ def status_translate(statusInt):
 def build_menu(menu_list):
     ss = '<ul class="menu">'
     for item in menu_list:
-        logger.debug(item)
         ss += '<li><a href="{1}">{0}</a>'.format(item['name'], item['url_reverse'])
         if 'add_new' in item:
             ss += u'<a href="{0}" class="add_new">+</a>'.format(item['add_new']['url_reverse'])
