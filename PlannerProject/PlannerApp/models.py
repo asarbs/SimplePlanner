@@ -47,6 +47,8 @@ class Item(MPTTModel):
     status = models.IntegerField(choices=[(tag.value, tag.name) for tag in Status], default=Status.NEW ) 
     team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.CASCADE)
     description = models.TextField(null=True, blank=True)
+    history = HistoricalRecords()
+
 
     @property
     def length(self):
@@ -76,16 +78,6 @@ class Item(MPTTModel):
 
     def __unicode__(self):
         return u'{0}'.format(self.name, blank=True, )
-
-class Board(models.Model):
-    name = models.CharField(max_length=120)
-    Team = models.ForeignKey(Team, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return u'{0}'.format(self.name)
-
-    def __unicode__(self):
-        return u'{0}'.format(self.name)
 
 
 class Project(models.Model):
