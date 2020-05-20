@@ -1,5 +1,6 @@
 from django.contrib import admin
 from mptt.admin import DraggableMPTTAdmin, TreeRelatedFieldListFilter
+from simple_history.admin import SimpleHistoryAdmin
 from PlannerApp.models import Item
 from PlannerApp.models import Team
 from PlannerApp.models import Board
@@ -17,7 +18,7 @@ class CustomMPTTModelAdmin(DraggableMPTTAdmin):
 
 
 @admin.register(Team)
-class TeamAdmin(admin.ModelAdmin):
+class TeamAdmin(SimpleHistoryAdmin):
     pass
 
 

@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from enum import Enum
 import datetime
 
+from simple_history.models import HistoricalRecords
+
 # Create your models here.
 
 
@@ -25,6 +27,7 @@ class Status(Enum):
 class Team(models.Model):
     name = models.CharField(max_length=120)
     teamMembers = models.ManyToManyField(User, blank=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return u'{0}'.format(self.name)
