@@ -3,7 +3,6 @@ from mptt.admin import DraggableMPTTAdmin, TreeRelatedFieldListFilter
 from simple_history.admin import SimpleHistoryAdmin
 from PlannerApp.models import Item
 from PlannerApp.models import Team
-from PlannerApp.models import Board
 from PlannerApp.models import Project
 
 
@@ -19,11 +18,6 @@ class CustomMPTTModelAdmin(DraggableMPTTAdmin):
 
 @admin.register(Team)
 class TeamAdmin(SimpleHistoryAdmin):
-    pass
-
-
-@admin.register(Board)
-class BoardAdmin(admin.ModelAdmin):
     pass
 
 
