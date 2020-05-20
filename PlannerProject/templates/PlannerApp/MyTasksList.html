@@ -1,12 +1,9 @@
 {% extends "main.html" %}
 {% load PalannerProjectTags %}
-{% load render_table from django_tables2 %}
 {% block main %}
 
 <h1>My Tasks</h1>
 
 {% build_item_table my_task_list %}
-
- {% render_table table %}
 
 {% endblock %}

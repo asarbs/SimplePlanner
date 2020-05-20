@@ -5,9 +5,7 @@
 
 
 <h1>{{ team }}</h1>
-<div class="list_of_actions"> 
-    <a href="{% url 'team-edit' pk=team.pk %}" class="button">Edit</a> 
-</div>
+        <a href="{% url 'team-edit' pk=team.pk %}" class="button">Edit</a> 
 <h3>Members:</h3>
 <ul>
 {% for member in team.teamMembers.all %}

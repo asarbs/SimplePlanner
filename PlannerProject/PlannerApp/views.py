@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 import json
 import logging
-logger = logging.getLogger(__name__)
 
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
@@ -15,7 +14,8 @@ from django.views.generic.list import ListView
 from django.contrib.auth.models import User
 
 from dal import autocomplete
-from django_tables2 import SingleTableView
+
+logger = logging.getLogger(__name__)
 
 from PlannerApp.models import Item
 from PlannerApp.models import Project
@@ -25,8 +25,6 @@ from PlannerApp.models import Team
 from PlannerApp.forms import NewItemForm
 from PlannerApp.forms import NewProjectForm
 from PlannerApp.forms import NewTeamForm
-
-from PlannerApp.tables import ItemTable
 
 # Create your views here.
 
@@ -141,10 +139,9 @@ def endItem(request, pk=None):
     return HttpResponseRedirect(reverse("item-details", args=(pk,)))
 
 
-class MyTasksList(SingleTableView):
+class MyTasksList(ListView):
     model = Item
     template_name = "PlannerApp/MyTasksList.html"
-    table_class = ItemTable
     context_object_name = 'my_task_list'
     
     def get_queryset(self):

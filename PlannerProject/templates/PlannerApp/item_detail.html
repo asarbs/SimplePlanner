@@ -4,14 +4,16 @@
 {% block main %}
 
 
-<div class="">
-   <h1>{{ item }}</h1>
-</div>
-<div class="list_of_actions">
-    <a href="{% url 'item-create' %}?iid={{ item.id }}" class="button">Add child</a>
-    <a href="{% url 'item-start' pk=item.pk %}" class="button">Start item</a>
-    <a href="{% url 'item-end' pk=item.pk %}" class="button">Close item</a> 
-    <a href="{% url 'item-edit' pk=item.pk %}" class="button">Edit</a> 
+<div style="width: 100%">
+    <div class="two_column_left">
+        <h1>{{ item }}</h1>
+    </div>
+    <div class="two_column_right list_of_actions">
+        <a href="{% url 'item-create' %}?iid={{ item.id }}" class="button">Add child</a>
+        <a href="{% url 'item-start' pk=item.pk %}" class="button">Start item</a>
+        <a href="{% url 'item-end' pk=item.pk %}" class="button">Close item</a> 
+        <a href="{% url 'item-edit' pk=item.pk %}" class="button">Edit</a> 
+    </div>
 </div>
 
 <table class="content">
