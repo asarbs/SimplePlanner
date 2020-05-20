@@ -1,0 +1,242 @@
+[
+  {
+    "model": "PlannerApp.team",
+    "pk": 12,
+    "fields": {
+      "name": "Team A",
+      "teamMembers": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "PlannerApp.team",
+    "pk": 13,
+    "fields": {
+      "name": "Team B",
+      "teamMembers": []
+    }
+  },
+  {
+    "model": "PlannerApp.team",
+    "pk": 14,
+    "fields": {
+      "name": "Team C",
+      "teamMembers": []
+    }
+  },
+  {
+    "model": "PlannerApp.team",
+    "pk": 15,
+    "fields": {
+      "name": "Team D",
+      "teamMembers": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "PlannerApp.item",
+    "pk": 15,
+    "fields": {
+      "name": "item 1",
+      "parent": null,
+      "priority": 1000.0,
+      "assignment": 1,
+      "start_date": "2020-05-07",
+      "end_date": "2020-05-07",
+      "planned_start_date": "2020-05-13",
+      "planned_end_date": "2020-05-14",
+      "status": 5,
+      "team": 12,
+      "description": "",
+      "lft": 1,
+      "rght": 10,
+      "tree_id": 1,
+      "level": 0
+    }
+  },
+  {
+    "model": "PlannerApp.item",
+    "pk": 16,
+    "fields": {
+      "name": "item 1.1",
+      "parent": 15,
+      "priority": 1000.0,
+      "assignment": 1,
+      "start_date": null,
+      "end_date": null,
+      "planned_start_date": "2020-05-13",
+      "planned_end_date": "2020-05-14",
+      "status": 1,
+      "team": 13,
+      "description": "test of editing #2",
+      "lft": 2,
+      "rght": 7,
+      "tree_id": 1,
+      "level": 1
+    }
+  },
+  {
+    "model": "PlannerApp.item",
+    "pk": 17,
+    "fields": {
+      "name": "item 1.2",
+      "parent": 15,
+      "priority": 1000.0,
+      "assignment": 1,
+      "start_date": null,
+      "end_date": null,
+      "planned_start_date": "2020-05-13",
+      "planned_end_date": "2020-05-15",
+      "status": 1,
+      "team": 12,
+      "description": "",
+      "lft": 8,
+      "rght": 9,
+      "tree_id": 1,
+      "level": 1
+    }
+  },
+  {
+    "model": "PlannerApp.item",
+    "pk": 18,
+    "fields": {
+      "name": "item 2",
+      "parent": null,
+      "priority": 1000.0,
+      "assignment": 1,
+      "start_date": null,
+      "end_date": null,
+      "planned_start_date": "2020-05-27",
+      "planned_end_date": "2020-05-30",
+      "status": 1,
+      "team": 13,
+      "description": "",
+      "lft": 1,
+      "rght": 4,
+      "tree_id": 2,
+      "level": 0
+    }
+  },
+  {
+    "model": "PlannerApp.item",
+    "pk": 20,
+    "fields": {
+      "name": "item 2.1",
+      "parent": 18,
+      "priority": 1000.0,
+      "assignment": 1,
+      "start_date": null,
+      "end_date": null,
+      "planned_start_date": "2020-06-11",
+      "planned_end_date": "2020-06-12",
+      "status": 1,
+      "team": 14,
+      "description": null,
+      "lft": 2,
+      "rght": 3,
+      "tree_id": 2,
+      "level": 1
+    }
+  },
+  {
+    "model": "PlannerApp.item",
+    "pk": 21,
+    "fields": {
+      "name": "item 1.1.1",
+      "parent": 16,
+      "priority": 1000.0,
+      "assignment": 1,
+      "start_date": null,
+      "end_date": null,
+      "planned_start_date": "2020-05-22",
+      "planned_end_date": "2020-05-24",
+      "status": 1,
+      "team": 14,
+      "description": "",
+      "lft": 3,
+      "rght": 6,
+      "tree_id": 1,
+      "level": 2
+    }
+  },
+  {
+    "model": "PlannerApp.item",
+    "pk": 23,
+    "fields": {
+      "name": "item 3",
+      "parent": null,
+      "priority": 1000.0,
+      "assignment": 1,
+      "start_date": null,
+      "end_date": null,
+      "planned_start_date": "2020-05-16",
+      "planned_end_date": "2020-05-09",
+      "status": 1,
+      "team": 15,
+      "description": null,
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 4,
+      "level": 0
+    }
+  },
+  {
+    "model": "PlannerApp.item",
+    "pk": 24,
+    "fields": {
+      "name": "item 1.1.1.1",
+      "parent": 21,
+      "priority": 1000.0,
+      "assignment": 1,
+      "start_date": null,
+      "end_date": null,
+      "planned_start_date": "2020-05-30",
+      "planned_end_date": "2020-05-31",
+      "status": 1,
+      "team": 15,
+      "description": "",
+      "lft": 4,
+      "rght": 5,
+      "tree_id": 1,
+      "level": 3
+    }
+  },
+  {
+    "model": "PlannerApp.item",
+    "pk": 25,
+    "fields": {
+      "name": "item 4",
+      "parent": null,
+      "priority": 1000.0,
+      "assignment": 1,
+      "start_date": null,
+      "end_date": null,
+      "planned_start_date": "2020-05-15",
+      "planned_end_date": "2020-05-24",
+      "status": 1,
+      "team": 12,
+      "description": "sdfdsafdsfa",
+      "lft": 1,
+      "rght": 2,
+      "tree_id": 5,
+      "level": 0
+    }
+  },
+  {
+    "model": "PlannerApp.project",
+    "pk": 1,
+    "fields": {
+      "name": "Project 1",
+      "items": [
+        15,
+        18,
+        23,
+        25
+      ]
+    }
+  }
+]
