@@ -1,0 +1,94 @@
+{% extends "main.html" %}
+{% load mptt_tags %}
+{% load PalannerProjectTags %}
+{% block main %}
+
+
+<div class="">
+   <h1>{{ item }}</h1>
+</div>
+
+<table class="content">
+    <tr class="even">
+        <th>
+            change date
+        </th>
+        <th>
+            responsible
+        </th>
+        <th>
+            Parent
+        </th>
+        <th>
+            Priority
+        </th>
+        <th>
+            Assignment
+        </th>
+        <th>
+            Start date:
+        </th>
+        <th>
+            Close date:
+        </th>
+        <th>
+            Planned start date:
+        </th>
+        <th>
+            Planned close date:
+        </th>
+        <th>
+            Status:
+        </th>
+        <th>
+            Team:
+        </th>
+        <th>
+            Description:
+        </th>
+    </tr>
+    {% for history_item in history %}
+    <tr class="{% cycle 'even' 'odd' %}">
+        <td class="important">
+            {{ history_item.history_date }}
+        </td>
+        <td class="important">
+            {{ history_item.history_user }}
+        </td>
+        <td>
+            {{ history_item.parent }}
+        </td>
+        <td>
+            {{ history_item.priority }}
+        </td>
+        <td>
+            {{ history_item.assignment }}
+        </td>
+        <td>
+            {{ history_item.start_date }}
+        </td>
+        <td>
+            {{ history_item.end_date }}
+        </td>
+        <td>
+            {{ history_item.planned_start_date }}
+        </td>
+        <td>
+            {{ history_item.planned_end_date }}
+        </td>
+        <td>
+            {% status_translate history_item.status %}
+        </td>
+        <td>
+            {{ history_item.team }}
+        </td>
+        <td>
+            {{ history_item.description }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+
+{% endblock %}

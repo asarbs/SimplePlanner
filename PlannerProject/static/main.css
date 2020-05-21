@@ -210,6 +210,11 @@ table.content tr td.left
   width: 20%
 }
 
+table.content tr td.important
+{
+  background-color: #7bbcc6;
+}
+
 table.content th
 {
   background-color: #8494a1;

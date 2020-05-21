@@ -14,6 +14,7 @@ urlpatterns = [
     path(r'item-start/<slug:pk>/', views.startItem, name="item-start"),
     path(r'item-end/<slug:pk>/', views.endItem, name="item-end"),
     path(r'item-edit/<slug:pk>/', views.ItemEdit.as_view(), name="item-edit"),
+    path(r'item-history/<slug:pk>/', views.ItemHistory.as_view(), name="item-history"),
     path(r'my_tasks', views.MyTasksList.as_view(), name="my_tasks"),
     path(r'team-create', views.TeamAdd.as_view(success_url=""), name="team-create"),
     path(r'team-details/<slug:pk>/', views.TeamDetails.as_view(), name="team-details"),

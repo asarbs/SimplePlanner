@@ -69,6 +69,22 @@ class ItemDetails(DetailView):
         item = super(ItemDetails, self).get_object(queryset)
         return item
 
+class ItemHistory(DetailView):
+    model = Item
+    template_name = "PlannerApp/ItemHistory.html"
+    
+    def get_object(self, queryset=None):
+        item = super(ItemHistory, self).get_object(queryset)
+        return item
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemHistory, self).get_context_data(**kwargs)
+        item = self.get_object()
+        context['history'] = item.history.all()
+        logger.debug(item)
+        for x in context['history']:
+            logger.debug(dir(x))
+        return context
 
 class ItemAdd(CreateView):
     model = Item

@@ -5,7 +5,8 @@ from PlannerApp.models import Item
 from PlannerApp.models import Team
 from PlannerApp.models import Project
 
-
+class MyModelAdmin(DraggableMPTTAdmin, SimpleHistoryAdmin):
+    pass
 
 
 class CustomMPTTModelAdmin(DraggableMPTTAdmin):
@@ -25,6 +26,6 @@ class TeamAdmin(SimpleHistoryAdmin):
 class ProjectAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(Item, CustomMPTTModelAdmin)
+admin.site.register(Item, MyModelAdmin)
 
 # Register your models here.
