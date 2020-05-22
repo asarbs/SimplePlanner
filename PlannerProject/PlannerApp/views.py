@@ -81,9 +81,6 @@ class ItemHistory(DetailView):
         context = super(ItemHistory, self).get_context_data(**kwargs)
         item = self.get_object()
         context['history'] = item.history.all()
-        logger.debug(item)
-        for x in context['history']:
-            logger.debug(dir(x))
         return context
 
 class ItemAdd(CreateView):
@@ -99,6 +96,12 @@ class ItemAdd(CreateView):
 
     def form_valid(self, form):
         item = form.save(commit=False)
+        logger.debug('{0} {1} {2}'.format(item, item.planned_start_date, item.planned_end_date))
+        if item.planned_end_date < item.planned_start_date:
+            logger.debug('End date must be later than start date.')
+            form.add_error('planned_end_date', 'End date must be later than start date.')
+            return self.form_invalid(form)
+
         if form.cleaned_data['project_id'] is not -1:
             item.save()
             project = Project.objects.get(id=form.cleaned_data['project_id'])
@@ -124,6 +127,11 @@ class ItemEdit(UpdateView):
 
     def form_valid(self, form):
         item = form.save(commit=False)
+        logger.debug('{0} {1} {2}'.format(item, item.planned_start_date, item.planned_end_date))
+        if item.planned_end_date < item.planned_start_date:
+            form.add_error('planned_end_date', 'End date must be later than start date.')
+            return self.form_invalid(form)
+
         if item.planned_start_date is not None or item.planned_end_date is not None:
             if (item.planned_start_date == item.planned_end_date):
                 item.planned_end_date += timedelta(days=1)
@@ -256,3 +264,15 @@ class UserAutocomplete(autocomplete.Select2QuerySetView):
         if self.q:
             qs = qs.filter(username__istartswith=self.q)
         return qs
+
+def report_team_workload(request):
+    teams = Team.objects.all()
+    for team in teams:
+        team.work_planned = 0
+        items = Item.objects.filter(team=team, status__in=[Status.NEW.value, Status.GROOMED.value, Status.IN_PROGRESS.value, Status.IN_TESTING.value])
+        for item in items:
+            logging.debug(u'{0} {1} {2}'.format(team, item, item.effort_estimation))
+            team.work_planned += item.effort_estimation
+
+
+    return render(request, 'PlannerApp/report_team_workload.html', {'teams': teams})

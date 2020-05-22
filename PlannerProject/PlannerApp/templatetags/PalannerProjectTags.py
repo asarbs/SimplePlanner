@@ -171,5 +171,7 @@ def page_menu():
     for team in teams:
         page_menu[-1]['children'].append({'name':team, 'url_reverse': reverse('team-details',args=(team.id,)), 'url_edit': reverse('team-edit',args=(team.id,))})
 
+    page_menu.append({'name': "Team workload report", 'url_reverse': reverse('reports-team-workload') })
+
 
     return mark_safe(build_menu(page_menu))

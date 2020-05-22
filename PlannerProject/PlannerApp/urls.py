@@ -24,4 +24,5 @@ urlpatterns = [
     path(r'ajax-close-item/<slug:pk>/', views.ajax_close_item, name="ajax-close-item"),
     path(r'ajax_set_team/<slug:pk>/<int:team_id>/', views.ajax_set_team, name="ajax_set_team"),
     path(r'user-autocomplete/', views.UserAutocomplete.as_view(), name='user-autocomplete'),
+    path(r'reports-team-workload', views.report_team_workload, name="reports-team-workload")
 ]

@@ -57,6 +57,12 @@ class Item(MPTTModel):
         except TypeError:
             return "0"
 
+    @property
+    def effort_estimation(self):
+        try:
+            return (self.planned_end_date - self.planned_start_date).days
+        except TypeError:
+            return "0"
 
     @property
     def item_id(self):
