@@ -96,9 +96,8 @@ class ItemAdd(CreateView):
 
     def form_valid(self, form):
         item = form.save(commit=False)
-        logger.debug('{0} {1} {2}'.format(item, item.planned_start_date, item.planned_end_date))
+
         if item.planned_end_date < item.planned_start_date:
-            logger.debug('End date must be later than start date.')
             form.add_error('planned_end_date', 'End date must be later than start date.')
             return self.form_invalid(form)
 
@@ -269,10 +268,14 @@ def report_team_workload(request):
     teams = Team.objects.all()
     for team in teams:
         team.work_planned = 0
-        items = Item.objects.filter(team=team, status__in=[Status.NEW.value, Status.GROOMED.value, Status.IN_PROGRESS.value, Status.IN_TESTING.value])
+        items = Item.objects.filter(team=team, status__in=[Status.NEW.value, Status.GROOMED.value, Status.IN_PROGRESS.value, Status.IN_TESTING.value]).order_by('-planned_end_date')
         for item in items:
             logging.debug(u'{0} {1} {2}'.format(team, item, item.effort_estimation))
             team.work_planned += item.effort_estimation
+            team.last_planned_item = item
+            
+        work_weeks = team.work_planned / 5
+        team.landing_date = datetime.now()+ timedelta(weeks=work_weeks)
 
 
     return render(request, 'PlannerApp/report_team_workload.html', {'teams': teams})

@@ -1,0 +1,50 @@
+{% extends "main.html" %}
+{% load mptt_tags %}
+{% load PalannerProjectTags %}
+{% block main %}
+
+
+<table class="content">
+    <tr class="even">
+        <th>
+        </th>
+    {% for team in teams %}
+        <th>
+            {{ team }}
+        </th>
+    {% endfor %}
+    </tr>
+    <tr class="even">
+        <td>
+            days of work to be done
+        </td>
+    {% for team in teams %}
+        <td>
+            {{ team.work_planned }}
+        </td>
+    {% endfor %}
+    </tr>
+    <tr class="odd">
+        <td>
+            landing date
+        </td>
+    {% for team in teams %}
+        <td>
+            {{ team.landing_date|date:"Y-m-d" }}
+        </td>
+    {% endfor %}
+    </tr>
+    <tr class="odd">
+        <td>
+            last planned item
+        </td>
+    {% for team in teams %}
+        <td>
+            {{ team.last_planned_item }}<br>
+            {{ team.last_planned_item.planned_end_date|date:"Y-m-d" }}
+        </td>
+    {% endfor %}
+    </tr>
+</table>
+
+{% endblock %}
