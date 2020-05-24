@@ -83,16 +83,6 @@ class ItemHistory(DetailView):
         context['history'] = item.history.all()
         return context
 
-def updateparent_plannedDates(item):
-    ancestors = item.get_ancestors()
-    for ancestor in ancestors:
-        if item.planned_end_date > ancestor.planned_end_date:
-            ancestor.planned_end_date = item.planned_end_date
-            ancestor.save()
-        if item.planned_start_date < ancestor.planned_start_date:
-            ancestor.planned_start_date = item.planned_start_date
-            ancestor.save()
-
 class ItemAdd(CreateView):
     model = Item
     form_class = NewItemForm
@@ -145,7 +135,6 @@ class ItemEdit(UpdateView):
             if (item.planned_start_date == item.planned_end_date):
                 item.planned_end_date += timedelta(days=1)
             item.save()
-        updateparent_plannedDates(item);
         return super(ItemEdit, self).form_valid(form)
 
     def get_success_url(self):

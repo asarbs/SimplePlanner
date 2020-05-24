@@ -43,8 +43,8 @@ class Item(MPTTModel):
     assignment = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    planned_start_date = models.DateField(default=datetime.date.today,null=True, blank=True)
-    planned_end_date = models.DateField(default=datetime.date.today,null=True, blank=True)
+    _planned_start_date = models.DateField(default=datetime.date.today,null=True, blank=True)
+    _planned_end_date = models.DateField(default=datetime.date.today,null=True, blank=True)
     status = models.IntegerField(choices=[(tag.value, tag.name) for tag in Status], default=Status.NEW ) 
     team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.CASCADE)
     description = models.TextField(null=True, blank=True)
@@ -60,7 +60,7 @@ class Item(MPTTModel):
     @property
     def effort_estimation(self):
         try:
-            return (self.planned_end_date - self.planned_start_date).days
+            return (self._planned_end_date - self._planned_start_date).days
         except TypeError:
             return "0"
 
@@ -72,9 +72,28 @@ class Item(MPTTModel):
         return out[0:-1]
 
     @property
+    def planned_start_date(self):
+        dates = [self._planned_start_date]
+        try:
+            for sd in self.get_children():
+                dates.append(sd._planned_start_date)
+        except:
+            pass
+        return min(dates)
+
+    @property
+    def planned_end_date(self):
+        dates = [self._planned_end_date]
+        try:
+            for sd in self.get_children():
+                dates.append(sd._planned_end_date)
+        except:
+            pass
+        return max(dates)
+
+    @property
     def generation(self):
         return self.get_ancestors().count()
-    
 
     class MPTTMeta:
         order_insertion_by = ['priority']
