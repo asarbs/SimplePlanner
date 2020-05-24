@@ -40,7 +40,7 @@
         </td>
     {% for team in teams %}
         <td>
-            {{ team.last_planned_item }}<br>
+            <a href="{% url 'item-details' pk=team.last_planned_item.pk %}">{{ team.last_planned_item }}</a><br>
             {{ team.last_planned_item.planned_end_date|date:"Y-m-d" }}
         </td>
     {% endfor %}
