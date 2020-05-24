@@ -108,7 +108,7 @@ def build_data_chart_one_line(item, ansesstor="null"):
     s =  "\t['{0}', '{1}', '{2}', new Date({3}, {4}, {5}), new Date({6}, {7}, {8}), null, 100, {9}]".format(
             item.item_id, 
             item, 
-            item.team, 
+            item.parent, 
             item_planned_start_date_year, 
             item_planned_start_date_month, 
             item_planned_start_date_day,
@@ -119,21 +119,35 @@ def build_data_chart_one_line(item, ansesstor="null"):
             )
     return s
 
-def foo(projectItems, ansesstor="null"):
+def build_chart_data_lines(projectItems, ansesstor="null"):
     lines = []
     for item in projectItems:
         s = build_data_chart_one_line(item, ansesstor)
         lines.append(s)
-        lines.extend(foo(item.get_children()))
+        lines.extend(build_chart_data_lines(item.get_children()))
     return lines
 
 @register.simple_tag
 def get_gnat_chart_data(projectItems):
     lines = []
-    lines.extend(foo(projectItems))
+    lines.extend(build_chart_data_lines(projectItems))
     ss = '[\n' + ',\n'.join(lines) + "\n]"
     return mark_safe(ss)
 
+def build_org_chart_line(projectItem, parent=''):
+    lines = ["['{0}','{1}']".format(projectItem, parent)]
+    for pitem in projectItem.get_children():
+         lines.extend(build_org_chart_line(pitem, projectItem))
+    return lines
+
+@register.simple_tag
+def get_org_chart(projectItems, project):
+    lines = []
+    for pitem in projectItems:
+        lines.extend(build_org_chart_line(pitem, project))
+
+    ss = '[\n' + ',\n'.join(lines) + "\n]"
+    return mark_safe(ss)
 
 @register.simple_tag
 def status_translate(statusInt):

@@ -110,8 +110,8 @@ class ItemAdd(CreateView):
             parent = Item.objects.get(id=form.cleaned_data['item_id'])
             item.insert_at(target=parent, position='last-child', save=True)
             item.save()
-        if item.planned_start_date == item.planned_end_date:
-            item.planned_end_date += timedelta(days=1)
+        if item._planned_start_date == item._planned_end_date:
+            item._planned_end_date += timedelta(days=1)
             item.save()
         self.id = item.id
         return super(ItemAdd, self).form_valid(form)
@@ -268,7 +268,7 @@ def report_team_workload(request):
     teams = Team.objects.all()
     for team in teams:
         team.work_planned = 0
-        items = Item.objects.filter(team=team, status__in=[Status.NEW.value, Status.GROOMED.value, Status.IN_PROGRESS.value, Status.IN_TESTING.value]).order_by('planned_end_date')
+        items = Item.objects.filter(team=team, status__in=[Status.NEW.value, Status.GROOMED.value, Status.IN_PROGRESS.value, Status.IN_TESTING.value]).order_by('_planned_end_date')
         for item in items:
             team.work_planned += item.effort_estimation
             team.last_planned_item = item

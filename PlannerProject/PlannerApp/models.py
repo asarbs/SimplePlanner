@@ -108,6 +108,28 @@ class Project(models.Model):
     name = models.CharField(max_length=500)
     items = models.ManyToManyField(Item, null=True, blank=True)
 
+    @property
+    def planned_start_date(self):
+        dates = []
+
+        for item in self.items.all():
+            dates.append(item.planned_start_date)
+        try:
+            return min(dates)
+        except:
+            return '#'
+
+    @property
+    def planned_end_date(self):
+        dates = []
+
+        for item in self.items.all():
+            dates.append(item.planned_end_date)
+        try:
+            return max(dates)
+        except:
+            return '#'
+
     def __str__(self):
         return u'{0}'.format(self.name)
 

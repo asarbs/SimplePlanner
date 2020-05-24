@@ -5,7 +5,8 @@
 
 
 <h1>{{ project }}</h1>
-Project progress: {% project_progress project %}
+Project progress: {% project_progress project %} 
+Start {{ project.planned_start_date }} -> Finish: {{ project.planned_end_date }}
 <div class="list_of_actions">
     <a href="{% url 'item-create' %}?pid={{ project.id }}" class="button">New Item</a>
 </div>
@@ -15,31 +16,30 @@ Project progress: {% project_progress project %}
 {% build_tree project.items.all %}
 
   <script type="text/javascript">
-    google.charts.load('current', {'packages':['gantt']});
+    google.charts.load('current', {'packages':['orgchart']});
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
 
       var data = new google.visualization.DataTable();
       data.addColumn('string', 'Task ID');
-      data.addColumn('string', 'Task Name');
-      data.addColumn('string', 'Resource');
-      data.addColumn('date', 'Start Date');
-      data.addColumn('date', 'End Date');
-      data.addColumn('number', 'Duration');
-      data.addColumn('number', 'Percent Complete');
-      data.addColumn('string', 'Dependencies');
+      data.addColumn('string', 'Parent');
 
-      data.addRows({% get_gnat_chart_data project.items.all %});
+      data.addRows({% get_org_chart project.items.all project %});
 
       var options = {
         height: 800,
         gantt: {
-          trackHeight: 30
+          trackHeight: 30,
+          criticalPathEnabled: true,
+          criticalPathStyle: {
+              stroke: '#e64a19',
+              strokeWidth: 5
+            }
         }
       };
 
-      var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+      var chart = new google.visualization.OrgChart(document.getElementById('chart_div'));
 
       chart.draw(data, options);
     }
