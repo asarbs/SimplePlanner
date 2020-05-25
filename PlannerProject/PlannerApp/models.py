@@ -107,6 +107,8 @@ class Item(MPTTModel):
         for ch in Item.objects.filter(parent=self):
             progress += ch.progress
             children_count += 1
+        if children_count == 0:
+            return 0
         progress = progress / children_count
         return round(progress)
     
@@ -153,6 +155,8 @@ class Project(models.Model):
         for ch in self.items.all():
             progress += ch.progress
             children_count += 1
+        if children_count == 0:
+            return 0
         progress = progress / children_count
         return round(progress)
     
