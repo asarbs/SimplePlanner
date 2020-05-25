@@ -19,6 +19,7 @@ def build_tree(nodeItems, line=0):
   <tr>
     <th>Item name</th>
     <th>Status</th>
+    <th>Progress</th>
     <th>Planned dates</th>
     <th>Execution dates</th>
     <th>Team</th>
@@ -43,6 +44,7 @@ def build_item_table(nodeItems, line=0):
   <tr>
     <th>Item name</th>
     <th>Status</th>
+    <th>Progress</th>
     <th>Planned dates</th>
     <th>Execution dates</th>
     <th>Team</th>

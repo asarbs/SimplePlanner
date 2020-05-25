@@ -53,6 +53,17 @@ function updateTeam(itemId)
     });
 }
 
+function updateProgress(itemId)
+{
+    var elem = document.getElementById( "item_progress_"+itemId )
+    var selected_team = elem.options[elem.selectedIndex].value;
+    $.get('/PlannerApp/ajax-item_change_progress/' + itemId + "/" + selected_team, function(data, status)
+    {
+        console.log(data)
+        console.log(status)
+    });
+}
+
 $(document).on('autocompleteLightInitialize', '[data-autocomplete-light-function=select2]', function() {
     // do select2 configuration on $(this)
 })

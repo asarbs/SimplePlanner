@@ -257,6 +257,15 @@ def ajax_set_team(request, pk, team_id):
     else:
         return HttpResponse(json.dumps({'status': "NOK"}), content_type="application/json")
 
+def ajax_item_change_progress(request, pk, progress):
+    if request.method == "GET" and request.is_ajax():
+        item = Item.objects.get(id=pk)
+        item._progress = progress 
+        item.save()
+        return HttpResponse(json.dumps({'status': "OK"}), content_type="application/json")
+    else:
+        return HttpResponse(json.dumps({'status': "NOK"}), content_type="application/json")
+
 class UserAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         if not self.request.user.is_authenticated:

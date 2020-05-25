@@ -49,6 +49,7 @@ class Item(MPTTModel):
     status = models.IntegerField(choices=[(tag.value, tag.name) for tag in Status], default=Status.NEW ) 
     team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.CASCADE)
     description = models.TextField(null=True, blank=True)
+    _progress = models.IntegerField(default = 0)
     history = HistoricalRecords()
 
     @property
@@ -96,6 +97,20 @@ class Item(MPTTModel):
     def generation(self):
         return self.get_ancestors().count()
 
+    @property
+    def progress(self):
+        if self.is_leaf_node():
+            return self._progress
+
+        progress = 0
+        children_count = 0
+        for ch in Item.objects.filter(parent=self):
+            progress += ch.progress
+            children_count += 1
+        progress = progress / children_count
+        return round(progress)
+    
+
     class MPTTMeta:
         order_insertion_by = ['priority']
 
@@ -130,6 +145,17 @@ class Project(models.Model):
             return max(dates)
         except:
             return '#'
+
+    @property
+    def progress(self):
+        progress = 0
+        children_count = 0
+        for ch in self.items.all():
+            progress += ch.progress
+            children_count += 1
+        progress = progress / children_count
+        return round(progress)
+    
 
     def __str__(self):
         return u'{0}'.format(self.name)

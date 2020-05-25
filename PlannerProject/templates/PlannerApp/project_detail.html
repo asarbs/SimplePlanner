@@ -5,8 +5,10 @@
 
 
 <h1>{{ project }}</h1>
-Project progress: {% project_progress project %} 
-Start {{ project.planned_start_date }} -> Finish: {{ project.planned_end_date }}
+<div class="list_of_actions">
+Project progress: {{ project.progress }}%  <br/>
+Start {{ project.planned_start_date }} -> Finish: {{ project.planned_end_date }} <br/>
+</div>
 <div class="list_of_actions">
     <a href="{% url 'item-create' %}?pid={{ project.id }}" class="button">New Item</a>
 </div>
