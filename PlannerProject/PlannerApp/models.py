@@ -38,6 +38,7 @@ class Team(models.Model):
 
 class Item(MPTTModel):
     name = models.CharField(max_length=500)
+    wbs_id = models.CharField(max_length=50, default="0")
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     priority = models.FloatField(max_length=25)
     assignment = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -99,10 +100,10 @@ class Item(MPTTModel):
         order_insertion_by = ['priority']
 
     def __str__(self):
-        return u'{0}'.format(self.name)
+        return u'{0} {1}'.format(self.wbs_id, self.name)
 
     def __unicode__(self):
-        return u'{0}'.format(self.name, blank=True, )
+        return u'{0} {1}'.format(self.wbs_id, self.name, blank=True, )
 
 class Project(models.Model):
     name = models.CharField(max_length=500)

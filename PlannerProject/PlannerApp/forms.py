@@ -30,12 +30,6 @@ class NewItemForm(ModelForm):
         self.fields['item_id'].widget = HiddenInput()
         self.fields['priority'].initial = 1000
 
-        if int(iid) > -1:
-            parent = Item.objects.get(id=iid)
-            children_num = parent.get_children().count() + 1
-            self.fields['parent'].initial = parent
-            self.fields['name'].initial = '{0}.{1}'.format(parent, children_num)
-
     class Meta:
         model = Item
         fields = ['name', 'parent', 'priority', 'assignment', 'start_date', 'end_date', 'status', '_planned_start_date', '_planned_end_date', 'team', 'description']

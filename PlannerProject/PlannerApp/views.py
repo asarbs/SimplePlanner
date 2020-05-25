@@ -105,10 +105,14 @@ class ItemAdd(CreateView):
             item.save()
             project = Project.objects.get(id=form.cleaned_data['project_id'])
             project.items.add(item)
+            children_num = project.items.count()
+            item.wbs_id = '{0}'.format(children_num)
             project.save()
         elif form.cleaned_data['item_id'] is not -1:
             parent = Item.objects.get(id=form.cleaned_data['item_id'])
             item.insert_at(target=parent, position='last-child', save=True)
+            children_num = parent.get_children().count()
+            item.wbs_id = '{0}.{1}'.format(parent.wbs_id, children_num)
             item.save()
         if item._planned_start_date == item._planned_end_date:
             item._planned_end_date += timedelta(days=1)

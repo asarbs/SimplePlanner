@@ -33,7 +33,7 @@ def build_team_select(selectedTeam, nodeItem):
 def build_item_line(nodeItem, line):
     line_class = "even" if line % 2 == 0 else "odd"
     ss = '<tr class="'+ line_class +'">\n'
-    ss += '<td style="padding-left: {0}px;"><a href="{1}">{2}</a></td>\n'.format((nodeItem.generation * 10), reverse('item-details', args=(nodeItem.id,) ), nodeItem.name)
+    ss += '<td style="padding-left: {0}px;"><a href="{1}">{2}</a></td>\n'.format((nodeItem.generation * 10), reverse('item-details', args=(nodeItem.id,) ), nodeItem)
     ss += '<td id="statusItem_'+ str(nodeItem.id) +'">{0}</td>'.format(Status(nodeItem.status))
     ss += '<td>{0} - {1}</td>\n'.format(nodeItem.planned_start_date, nodeItem.planned_end_date)
     ss += '<td id="dates_{0}">{1} - {2}</td>\n'.format(nodeItem.id, nodeItem.start_date, nodeItem.end_date)
