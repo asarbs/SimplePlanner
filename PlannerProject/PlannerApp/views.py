@@ -231,12 +231,11 @@ def ajax_start_item(request, pk):
         for item in changed_items:
             d['items'].append(
                 {'item_id': item.id,
-                'newState': str(Status.IN_PROGRESS),
+                'newState': str(Status(item.getStatus())),
                 'start_date': item.start_date.strftime("%m/%d/%Y") if item.start_date is not None else '-#-',
                 'end_date': item.end_date.strftime("%m/%d/%Y") if item.end_date is not None else '-#-',
                 }
             )
-
         return HttpResponse(json.dumps(d), content_type="application/json")
     else:
         return HttpResponse(json.dumps({'status': "NOK"}), content_type="application/json")
@@ -248,7 +247,7 @@ def ajax_close_item(request, pk):
         for item in changed_items:
             d['items'].append(
                 {'item_id': item.id,
-                'newState': str(Status.DONE),
+                'newState': str(Status(item.getStatus())),
                 'start_date': item.start_date.strftime("%m/%d/%Y") if item.start_date is not None else '-#-',
                 'end_date': item.end_date.strftime("%m/%d/%Y") if item.end_date is not None else '-#-',
                 }

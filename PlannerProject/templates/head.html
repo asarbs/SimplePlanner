@@ -10,22 +10,28 @@
 
 {% block javascript %}
 <script type="text/javascript"> 
+
+function updateTable(data)
+{
+    for(d in data)
+    {
+        var elem = document.getElementById( "statusItem_"+data[d].item_id )
+        elem.innerHTML = data[d].newState
+        var elem = document.getElementById( "dates_"+data[d].item_id )
+        elem.innerHTML = d['start_date'] + "-" + data[d].end_date
+    }
+}
+
 function startItem(itemId)
 {
     $.get("/PlannerApp/ajax-start-item/"+itemId, function(data, status)
     {
-        console.log(data['items'])
         if (data['status'] == "OK")
         {
-            for(d in data['items'])
-            {
-                console.log(d['itemId'])
-                var elem = document.getElementById( "statusItem_"+d['itemId'] )
-                console.log(elem)
-                elem.innerHTML = d['newState']
-                var elem = document.getElementById( "dates_"+d['itemId'] )
-                elem.innerHTML = d['start_date'] + "-" + data['end_date']
-            }
+            updateTable(data['items'])
+            console.log("start_button_"+itemId)
+            $("#start_button_"+itemId).hide();
+            $("#close_button_"+itemId).show();
         }
     });
 }
@@ -37,11 +43,10 @@ function closeItem(itemId)
         console.log(data)
         if (data['status'] == "OK")
         {
-            // console.log(data);
-            // var elem = document.getElementById( "statusItem_"+itemId )
-            // elem.innerHTML = data['newState']
-            // var elem = document.getElementById( "dates_"+itemId )
-            // elem.innerHTML = data['start_date'] + "-" + data['end_date']
+            updateTable(data['items'])
+            console.log("start_button_"+itemId)
+            $("#start_button_"+itemId).show();
+            $("#close_button_"+itemId).hide();
         }
     });
 }

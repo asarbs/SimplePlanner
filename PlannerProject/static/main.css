@@ -15,6 +15,16 @@
     color: #ffa500;
 }
 
+.show
+{
+  display: inline;
+}
+
+.hide
+{
+  display: none;
+}
+
 .info {
     background-color : #993333;
     border : #660000 solid 1px;
