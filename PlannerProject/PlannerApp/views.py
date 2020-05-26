@@ -154,7 +154,10 @@ def setItemStatus(request, pk, status):
         item.end_date = datetime.now()
     item.assignment = request.user
     item.save()
-    return item
+    out = [item]
+    for ancestor in item.get_ancestors():
+        out.extend( setItemStatus(request, ancestor.pk, status) )
+    return out
 
 def startItem(request, pk=None): 
     setItemStatus(request, pk, Status.IN_PROGRESS)
@@ -223,24 +226,34 @@ class TeamEdit(UpdateView):
 
 def ajax_start_item(request, pk):
     if request.method == "GET" and request.is_ajax():
-        item = setItemStatus(request, pk, Status.IN_PROGRESS)
-        d = {'status': "OK",
-        'newState': str(Status.IN_PROGRESS),
-        'start_date': item.start_date.strftime("%m/%d/%Y") if item.start_date is not None else '-#-',
-        'end_date': item.end_date.strftime("%m/%d/%Y") if item.end_date is not None else '-#-',
-        }
+        changed_items = setItemStatus(request, pk, Status.IN_PROGRESS)
+        d = {'status': "OK", 'items': [] }
+        for item in changed_items:
+            d['items'].append(
+                {'item_id': item.id,
+                'newState': str(Status.IN_PROGRESS),
+                'start_date': item.start_date.strftime("%m/%d/%Y") if item.start_date is not None else '-#-',
+                'end_date': item.end_date.strftime("%m/%d/%Y") if item.end_date is not None else '-#-',
+                }
+            )
+
         return HttpResponse(json.dumps(d), content_type="application/json")
     else:
         return HttpResponse(json.dumps({'status': "NOK"}), content_type="application/json")
 
 def ajax_close_item(request, pk):
     if request.method == "GET" and request.is_ajax():
-        item = setItemStatus(request, pk, Status.DONE)
-        d = {'status': "OK",
-        'newState': str(Status.DONE),
-        'start_date': item.start_date.strftime("%m/%d/%Y") if item.start_date is not None else '-#-',
-        'end_date': item.end_date.strftime("%m/%d/%Y") if item.end_date is not None else '-#-',
-        }
+        changed_items = setItemStatus(request, pk, Status.DONE)
+        d = {'status': "OK", 'items': [] }
+        for item in changed_items:
+            d['items'].append(
+                {'item_id': item.id,
+                'newState': str(Status.DONE),
+                'start_date': item.start_date.strftime("%m/%d/%Y") if item.start_date is not None else '-#-',
+                'end_date': item.end_date.strftime("%m/%d/%Y") if item.end_date is not None else '-#-',
+                }
+            )
+
         return HttpResponse(json.dumps(d), content_type="application/json")
     else:
         return HttpResponse(json.dumps({'status': "NOK"}), content_type="application/json")

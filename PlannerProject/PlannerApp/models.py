@@ -11,10 +11,10 @@ from simple_history import register
 
 
 class Status(Enum):
-    NEW = 1
-    GROOMED = 2
-    IN_PROGRESS = 3
-    IN_TESTING = 4
+    IN_PROGRESS = 1
+    IN_TESTING = 2
+    NEW = 3
+    GROOMED = 4
     DONE = 5
     REJECTED = 6
     DEPLOYED = 7
@@ -112,6 +112,15 @@ class Item(MPTTModel):
         progress = progress / children_count
         return round(progress)
     
+    def getStatus(self):
+        childrens = Item.objects.filter(parent=self)
+        if childrens.count() == 0:
+            return self.status
+        else:
+            child_status = []
+            for children in childrens:
+                child_status.append(children.getStatus())
+            return min(child_status)
 
     class MPTTMeta:
         order_insertion_by = ['priority']

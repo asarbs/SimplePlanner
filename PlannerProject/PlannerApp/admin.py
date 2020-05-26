@@ -5,16 +5,13 @@ from PlannerApp.models import Item
 from PlannerApp.models import Team
 from PlannerApp.models import Project
 
-class MyModelAdmin(DraggableMPTTAdmin, SimpleHistoryAdmin):
-    pass
 
-
-class CustomMPTTModelAdmin(DraggableMPTTAdmin):
+class CustomMPTTModelAdmin(DraggableMPTTAdmin, SimpleHistoryAdmin):
     model = Item
     mptt_level_indent = 20
-    list_display = ('tree_actions', 'indented_title', 'priority', 'assignment', 'status', 'start_date', 'end_date', 'planned_start_date', 'planned_end_date', 'length', 'item_id', 'team')
+    list_display = ('tree_actions', 'indented_title', 'priority', 'assignment', 'status', 'start_date', 'end_date', '_planned_start_date', '_planned_end_date', 'length', 'item_id', 'team', '_progress')
     list_display_links = ('indented_title', )
-    list_editable = ( 'status', 'planned_start_date', 'planned_end_date', 'team', 'start_date', 'end_date', '_progress')
+    list_editable = ( 'status', '_planned_start_date', '_planned_end_date', 'team', 'start_date', 'end_date', '_progress')
 
 
 @admin.register(Team)
@@ -26,6 +23,6 @@ class TeamAdmin(SimpleHistoryAdmin):
 class ProjectAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(Item, MyModelAdmin)
+admin.site.register(Item, CustomMPTTModelAdmin)
 
 # Register your models here.

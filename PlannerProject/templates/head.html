@@ -14,14 +14,18 @@ function startItem(itemId)
 {
     $.get("/PlannerApp/ajax-start-item/"+itemId, function(data, status)
     {
-        console.log("statusItem_"+itemId)
+        console.log(data['items'])
         if (data['status'] == "OK")
         {
-            console.log(data);
-            var elem = document.getElementById( "statusItem_"+itemId )
-            elem.innerHTML = data['newState']
-            var elem = document.getElementById( "dates_"+itemId )
-            elem.innerHTML = data['start_date'] + "-" + data['end_date']
+            for(d in data['items'])
+            {
+                console.log(d['itemId'])
+                var elem = document.getElementById( "statusItem_"+d['itemId'] )
+                console.log(elem)
+                elem.innerHTML = d['newState']
+                var elem = document.getElementById( "dates_"+d['itemId'] )
+                elem.innerHTML = d['start_date'] + "-" + data['end_date']
+            }
         }
     });
 }
@@ -33,11 +37,11 @@ function closeItem(itemId)
         console.log(data)
         if (data['status'] == "OK")
         {
-            console.log(data);
-            var elem = document.getElementById( "statusItem_"+itemId )
-            elem.innerHTML = data['newState']
-            var elem = document.getElementById( "dates_"+itemId )
-            elem.innerHTML = data['start_date'] + "-" + data['end_date']
+            // console.log(data);
+            // var elem = document.getElementById( "statusItem_"+itemId )
+            // elem.innerHTML = data['newState']
+            // var elem = document.getElementById( "dates_"+itemId )
+            // elem.innerHTML = data['start_date'] + "-" + data['end_date']
         }
     });
 }

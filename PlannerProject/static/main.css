@@ -26,15 +26,13 @@
 
 .button
 {
-  font: bold 14px Arial;
+  font: normal 12px Arial;
   text-decoration: none;
-  background-color: #bed5fa;
+  background-color: #F0F0F0;
   color: #333333;
   padding: 5px 10px 5px 10px;
-  border-top: 1px solid #8298ba;
-  border-right: 1px solid #333333;
-  border-bottom: 1px solid #333333;
-  border-left: 1px solid #8298ba;
+  border: 1px solid #ccc; /* Gray border */
+  border-radius: 4px; /* Rounded borders */
 }
 
 .errorlist
@@ -51,6 +49,10 @@ input[type=text], select, textarea {
   margin-top: 6px; /* Add a top margin */
   margin-bottom: 16px; /* Bottom margin */
   resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+select.select_progress {
+  width: 50px;
 }
 
 input[type=date], select, textarea {
