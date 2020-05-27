@@ -67,13 +67,6 @@ class Item(MPTTModel):
             return "0"
 
     @property
-    def item_id(self):
-        out = ""
-        for parent in self.get_ancestors(include_self=True).all():
-            out += str(parent.id) + "."
-        return out[0:-1]
-
-    @property
     def planned_start_date(self):
         dates = [self._planned_start_date]
         try:

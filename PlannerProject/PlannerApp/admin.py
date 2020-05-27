@@ -9,7 +9,7 @@ from PlannerApp.models import Project
 class CustomMPTTModelAdmin(DraggableMPTTAdmin, SimpleHistoryAdmin):
     model = Item
     mptt_level_indent = 20
-    list_display = ('tree_actions', 'indented_title', 'priority', 'assignment', 'status', 'start_date', 'end_date', '_planned_start_date', '_planned_end_date', 'length', 'item_id', 'team', '_progress')
+    list_display = ('tree_actions', 'indented_title', 'priority', 'assignment', 'status', 'start_date', 'end_date', '_planned_start_date', '_planned_end_date', 'length', 'team', '_progress')
     list_display_links = ('indented_title', )
     list_editable = ( 'status', '_planned_start_date', '_planned_end_date', 'team', 'start_date', 'end_date', '_progress')
 
