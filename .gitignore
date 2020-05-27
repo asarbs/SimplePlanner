@@ -4,3 +4,4 @@ env
 db.sqlite3
 Planner.sublime-project
 Planner.sublime-workspace
+simple_history
