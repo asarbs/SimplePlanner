@@ -51,6 +51,7 @@ def build_item_line(nodeItem, line):
     line_class = "even" if line % 2 == 0 else "odd"
     ss = '<tr class="'+ line_class +'">\n'
     ss += '<td style="padding-left: {0}px;"><a href="{1}">{2}</a></td>\n'.format((nodeItem.generation * 10), reverse('item-details', args=(nodeItem.id,) ), nodeItem)
+    #ss += '<td>{0}</th>'.format(nodeItem.calc_priority())
     ss += '<td id="statusItem_'+ str(nodeItem.id) +'" width="120">{0}</td>'.format(Status(nodeItem.getStatus()))
     ss += '<td width="20">{0}%</td>'.format(nodeItem.progress)
     ss += '<td width="240">{0} - {1}</td>\n'.format(nodeItem.planned_start_date, nodeItem.planned_end_date)

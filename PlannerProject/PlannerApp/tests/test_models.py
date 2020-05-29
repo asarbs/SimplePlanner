@@ -13,7 +13,7 @@ class ItemTest(TestCase):
         name = "Test item 1",
         wbs_id = "1",
         parent = None,
-        priority = 1000,
+        priority = 123,
         assignment = None,
         start_date = datetime.datetime(2020, 5, 17),
         end_date = datetime.datetime(2020, 5, 19),
@@ -29,7 +29,7 @@ class ItemTest(TestCase):
         name = "Test item 2",
         wbs_id = "1.1",
         parent = Item.objects.get(id=1),
-        priority = 1000,
+        priority = 10,
         assignment = None,
         start_date = datetime.datetime(2020, 5, 17),
         end_date = datetime.datetime(2020, 5, 19),
@@ -95,6 +95,10 @@ class ItemTest(TestCase):
     def test_calculate_root_item_status(self):
         item = Item.objects.get(id=1)
         self.assertEquals(Status(item.getStatus()), Status.IN_PROGRESS)
+
+    def test_calcualte_priority(self):
+        item = Item.objects.get(id=2) 
+        self.assertEquals(item.calc_priority(), "0123.0010")
 
 
 

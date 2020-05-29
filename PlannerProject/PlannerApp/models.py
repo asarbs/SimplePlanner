@@ -40,7 +40,7 @@ class Item(MPTTModel):
     name = models.CharField(max_length=500)
     wbs_id = models.CharField(max_length=50, default="0")
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-    priority = models.FloatField(max_length=25)
+    priority = models.IntegerField(default=1)
     assignment = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
@@ -114,6 +114,16 @@ class Item(MPTTModel):
             for children in childrens:
                 child_status.append(children.getStatus())
             return min(child_status)
+
+    def calc_priority(self):
+        prio = []
+        for a in self.get_ancestors():
+            prio.append('{0:04d}'.format(a.priority))
+        prio.append('{0:04d}'.format(self.priority))
+        ss = '.'.join(prio)
+        return ss
+
+
 
     class MPTTMeta:
         order_insertion_by = ['priority']
