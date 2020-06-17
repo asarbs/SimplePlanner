@@ -122,7 +122,7 @@ def build_gantt_chart_line(item):
 
     #a = "null" if ansesstor == "null"  else "'" + ansesstor + "'"
     a = ""
-    s =  "\t['{0}', '{1}', new Date({2}, {3}, {4}), new Date({5}, {6}, {7}), null,  {8},  null]".format(
+    s =  "\t['{0}', '{1}', new Date({2}, {3}, {4}), new Date({5}, {6}, {7}), null,  {8},  {9}]".format(
             item.wbs_id, 
             item, 
             item_planned_start_date_year, 
@@ -131,7 +131,8 @@ def build_gantt_chart_line(item):
             item_planned_end_date_year, 
             item_planned_end_date_month, 
             item_planned_end_date_day,
-            item.progress
+            item.progress,
+            "null" if item.predecessor_item == None else "'{0}'".format(item.predecessor_item.wbs_id)
             )
     return s
 

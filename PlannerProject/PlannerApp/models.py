@@ -51,6 +51,8 @@ class Item(MPTTModel):
     description = models.TextField(null=True, blank=True)
     _progress = models.IntegerField(default = 0)
     history = HistoricalRecords()
+    next_item = models.ForeignKey("self", on_delete=models.CASCADE, default = None, blank=True, null=True, related_name='%(class)s_next_item')
+    predecessor_item = models.ForeignKey("self", on_delete=models.CASCADE, default = None, blank=True, null=True, related_name='%(class)s_predecessor_item')
 
     @property
     def length(self):
