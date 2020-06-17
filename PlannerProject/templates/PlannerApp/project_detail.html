@@ -34,7 +34,6 @@ Start {{ project.planned_start_date }} -> Finish: {{ project.planned_end_date }}
       data.addRows({% get_org_chart project.items.all project %});
 
       var options = {
-        height: 800,
         gantt: {
           trackHeight: 30,
           criticalPathEnabled: true,
@@ -65,7 +64,7 @@ Start {{ project.planned_start_date }} -> Finish: {{ project.planned_end_date }}
       data.addRows({% get_gantt_chart_data project.items.all %});
 
       var options = {
-        height: 275
+        height: 675
       };
 
       var chart = new google.visualization.Gantt(document.getElementById('gantt_chart_div'));

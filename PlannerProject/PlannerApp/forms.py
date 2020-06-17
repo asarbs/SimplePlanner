@@ -6,6 +6,7 @@ from django.forms import DateInput
 from django.forms import IntegerField
 from django.forms import HiddenInput
 from django.forms import Select
+from django.forms import TextInput
 from PlannerApp.models import Project, Item, Team
 
 
@@ -31,8 +32,9 @@ class NewItemForm(ModelForm):
 
     class Meta:
         model = Item
-        fields = ['name', 'parent', 'priority', 'assignment', 'start_date', 'end_date', 'status', '_planned_start_date', '_planned_end_date', 'team', 'description']
+        fields = ['name', 'wbs_id', 'parent', 'priority', 'assignment', 'start_date', 'end_date', 'status', '_planned_start_date', '_planned_end_date', 'team', 'next_item', 'description']
         widgets = {
+            'wbs_id': TextInput(attrs={'readonly':'readonly'}),
             'start_date': DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
             'end_date': DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
             '_planned_start_date': DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),

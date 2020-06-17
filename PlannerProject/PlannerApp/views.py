@@ -138,7 +138,12 @@ class ItemEdit(UpdateView):
         if item.planned_start_date is not None or item.planned_end_date is not None:
             if (item.planned_start_date == item.planned_end_date):
                 item.planned_end_date += timedelta(days=1)
-            item.save()
+
+        if item.next_item is not None:
+            item.next_item.predecessor_item = item
+            item.next_item.save()
+
+        item.save()
         return super(ItemEdit, self).form_valid(form)
 
     def get_success_url(self):
