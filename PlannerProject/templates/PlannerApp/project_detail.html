@@ -19,7 +19,11 @@ Start {{ project.planned_start_date }} -> Finish: {{ project.planned_end_date }}
 
   <script type="text/javascript">
     google.charts.load('current', {'packages':['orgchart']});
+    google.charts.load('current', {'packages':['gantt']});
+
+
     google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawGanttChart);
 
     function drawChart() {
 
@@ -45,9 +49,36 @@ Start {{ project.planned_start_date }} -> Finish: {{ project.planned_end_date }}
 
       chart.draw(data, options);
     }
+
+    function drawGanttChart() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Task ID');
+      data.addColumn('string', 'Task Name');
+      data.addColumn('date', 'Start Date');
+      data.addColumn('date', 'End Date');
+      data.addColumn('number', 'Duration');
+      data.addColumn('number', 'Percent Complete');
+      data.addColumn('string', 'Dependencies');
+
+
+      data.addRows({% get_gantt_chart_data project.items.all %});
+
+      var options = {
+        height: 275
+      };
+
+      var chart = new google.visualization.Gantt(document.getElementById('gantt_chart_div'));
+
+      chart.draw(data, options);
+    }
   </script>
 
+
 <div id="chart_div"></div>
+
+<div id="gantt_chart_div"></div>
+
 
 
 {% endblock %}

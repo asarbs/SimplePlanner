@@ -87,55 +87,6 @@ def build_item_affiliation(nodeItem):
 
     return mark_safe(ss)
 
-
-def build_data_chart_one_line(item, ansesstor="null"):
-    item_planned_start_date_year = 0
-    item_planned_start_date_month = 0
-    item_planned_start_date_day = 0
-    item_planned_end_date_year = 0
-    item_planned_end_date_month = 0
-    item_planned_end_date_day = 0
-    try:
-
-        item_planned_start_date_year = item.planned_start_date.year
-        item_planned_start_date_month = item.planned_start_date.month -1
-        item_planned_start_date_day = item.planned_start_date.day
-        item_planned_end_date_year = item.planned_end_date.year
-        item_planned_end_date_month = item.planned_end_date.month -1 
-        item_planned_end_date_day = item.planned_end_date.day
-    except AttributeError: 
-        pass
-
-    a = "null" if ansesstor == "null"  else "'" + ansesstor + "'"
-    s =  "\t['{0}', '{1}', '{2}', new Date({3}, {4}, {5}), new Date({6}, {7}, {8}), null, 100, {9}]".format(
-            item.item_id, 
-            item, 
-            item.parent, 
-            item_planned_start_date_year, 
-            item_planned_start_date_month, 
-            item_planned_start_date_day,
-            item_planned_end_date_year, 
-            item_planned_end_date_month, 
-            item_planned_end_date_day,
-            str(a)
-            )
-    return s
-
-def build_chart_data_lines(projectItems, ansesstor="null"):
-    lines = []
-    for item in projectItems:
-        s = build_data_chart_one_line(item, ansesstor)
-        lines.append(s)
-        lines.extend(build_chart_data_lines(item.get_children()))
-    return lines
-
-@register.simple_tag
-def get_gnat_chart_data(projectItems):
-    lines = []
-    lines.extend(build_chart_data_lines(projectItems))
-    ss = '[\n' + ',\n'.join(lines) + "\n]"
-    return mark_safe(ss)
-
 def build_org_chart_line(projectItem, parent=''):
     lines = ["['{0}','{1}']".format(projectItem, parent)]
     for pitem in projectItem.get_children():
@@ -150,6 +101,60 @@ def get_org_chart(projectItems, project):
 
     ss = '[\n' + ',\n'.join(lines) + "\n]"
     return mark_safe(ss)
+
+
+def build_gantt_chart_line(item):
+    item_planned_start_date_year = 0
+    item_planned_start_date_month = 0
+    item_planned_start_date_day = 0
+    item_planned_end_date_year = 0
+    item_planned_end_date_month = 0
+    item_planned_end_date_day = 0
+    try:
+        item_planned_start_date_year = item.planned_start_date.year
+        item_planned_start_date_month = item.planned_start_date.month -1
+        item_planned_start_date_day = item.planned_start_date.day
+        item_planned_end_date_year = item.planned_end_date.year
+        item_planned_end_date_month = item.planned_end_date.month -1 
+        item_planned_end_date_day = item.planned_end_date.day
+    except AttributeError: 
+        pass
+
+    #a = "null" if ansesstor == "null"  else "'" + ansesstor + "'"
+    a = ""
+    s =  "\t['{0}', '{1}', new Date({2}, {3}, {4}), new Date({5}, {6}, {7}), null,  {8},  null]".format(
+            item.wbs_id, 
+            item, 
+            item_planned_start_date_year, 
+            item_planned_start_date_month, 
+            item_planned_start_date_day,
+            item_planned_end_date_year, 
+            item_planned_end_date_month, 
+            item_planned_end_date_day,
+            item.progress
+            )
+    return s
+
+
+def build_gantt_chart_lines(item):
+    lines = []
+    lines.append(build_gantt_chart_line(item))
+    for children in item.get_descendants():
+        lines.append(build_gantt_chart_line(children))
+
+    return lines
+
+
+
+@register.simple_tag
+def get_gantt_chart_data(projectItems):
+    logger.debug(projectItems)
+    lines = []
+    for item in projectItems:
+        lines.extend(build_gantt_chart_lines(item))
+    ss = '[\n' + ',\n'.join(lines) + "\n]"
+    return mark_safe(ss)
+
 
 @register.simple_tag
 def status_translate(statusInt):
