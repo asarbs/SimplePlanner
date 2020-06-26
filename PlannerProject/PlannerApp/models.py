@@ -46,7 +46,7 @@ class Item(MPTTModel):
     end_date = models.DateField(null=True, blank=True)
     _planned_start_date = models.DateField(default=datetime.date.today,null=True, blank=True)
     _planned_end_date = models.DateField(default=datetime.date.today,null=True, blank=True)
-    status = models.IntegerField(choices=[(tag.value, tag.name) for tag in Status], default=Status.NEW ) 
+    status = models.IntegerField(choices=[(tag.value, tag.name) for tag in Status], default=Status.NEW.value ) 
     team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.CASCADE)
     description = models.TextField(null=True, blank=True)
     _progress = models.IntegerField(default = 0)

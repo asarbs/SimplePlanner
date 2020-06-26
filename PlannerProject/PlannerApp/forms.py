@@ -29,6 +29,7 @@ class NewItemForm(ModelForm):
         self.iid = iid
         self.fields['item_id'].initial = iid
         self.fields['item_id'].widget = HiddenInput()
+        self.fields['name'].initial = "item"
 
     class Meta:
         model = Item

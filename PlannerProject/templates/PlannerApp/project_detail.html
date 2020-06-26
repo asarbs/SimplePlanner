@@ -65,7 +65,7 @@ Start {{ project.planned_start_date }} -> Finish: {{ project.planned_end_date }}
       data.addRows({% get_gantt_chart_data project.items.all %});
 
       var options = {
-        height: 675
+        height: 1675
       };
 
       var chart = new google.visualization.Gantt(document.getElementById('gantt_chart_div'));
@@ -77,7 +77,7 @@ Start {{ project.planned_start_date }} -> Finish: {{ project.planned_end_date }}
 
 <div id="chart_div"></div>
 
-<div id="gantt_chart_div"></div>
+<!-- <div id="gantt_chart_div"></div> -->
 
 
 

@@ -111,12 +111,12 @@ def build_gantt_chart_line(item):
     item_planned_end_date_month = 0
     item_planned_end_date_day = 0
     try:
-        item_planned_start_date_year = item.planned_start_date.year
-        item_planned_start_date_month = item.planned_start_date.month -1
-        item_planned_start_date_day = item.planned_start_date.day
-        item_planned_end_date_year = item.planned_end_date.year
-        item_planned_end_date_month = item.planned_end_date.month -1 
-        item_planned_end_date_day = item.planned_end_date.day
+        item_planned_start_date_year = item._planned_start_date.year
+        item_planned_start_date_month = item._planned_start_date.month -1
+        item_planned_start_date_day = item._planned_start_date.day
+        item_planned_end_date_year = item._planned_end_date.year
+        item_planned_end_date_month = item._planned_end_date.month -1 
+        item_planned_end_date_day = item._planned_end_date.day
     except AttributeError: 
         pass
 
@@ -149,12 +149,11 @@ def build_gantt_chart_lines(item):
 
 @register.simple_tag
 def get_gantt_chart_data(projectItems):
-    logger.debug(projectItems)
     lines = []
     for item in projectItems:
         lines.extend(build_gantt_chart_lines(item))
     ss = '[\n' + ',\n'.join(lines) + "\n]"
-    return mark_safe(ss)
+    return "" # mark_safe(ss)
 
 
 @register.simple_tag

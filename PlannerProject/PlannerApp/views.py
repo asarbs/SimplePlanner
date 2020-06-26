@@ -65,11 +65,11 @@ def ProjectList(request):
 def update_date(item, new_date):
     if item is None:
         return
-    duration = item.planned_end_date - item.planned_start_date
+    duration = item._planned_end_date - item._planned_start_date
     item._planned_start_date = new_date
     item._planned_end_date = new_date + duration
     item.save()
-    update_date(item.next_item, item.planned_end_date)
+    update_date(item.next_item, item._planned_end_date)
 
     logger.debug(u'{0} -> {2} - {1} {3}'.format(item, new_date, item.next_item, duration))
 
