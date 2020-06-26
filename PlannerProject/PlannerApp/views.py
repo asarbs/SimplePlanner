@@ -62,6 +62,25 @@ def ProjectList(request):
     return render(request,"PlannerApp/project_list.html", context={'projects':projects})
 
 
+def update_date(item, new_date):
+    if item is None:
+        return
+    duration = item.planned_end_date - item.planned_start_date
+    item._planned_start_date = new_date
+    item._planned_end_date = new_date + duration
+    item.save()
+    update_date(item.next_item, item.planned_end_date)
+
+    logger.debug(u'{0} -> {2} - {1} {3}'.format(item, new_date, item.next_item, duration))
+
+
+def project_recalculate(request, pk):
+    project = Project.objects.get(id=pk)
+    for item in project.items.all():
+        update_date(item.next_item, item.planned_end_date)
+
+    return HttpResponseRedirect(reverse("project-details", args=(pk,)))
+
 class ItemDetails(DetailView):
     model = Item
 

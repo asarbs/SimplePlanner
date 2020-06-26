@@ -11,6 +11,7 @@ Start {{ project.planned_start_date }} -> Finish: {{ project.planned_end_date }}
 </div>
 <div class="list_of_actions">
     <a href="{% url 'item-create' %}?pid={{ project.id }}" class="button">New Item</a>
+    <a href="{% url 'project-recalculate' project.id %}"" class="button"> Recalcualte project</a>
 </div>
 
 <br><br>
